@@ -30,10 +30,10 @@ import java.util.Collections;
 
 //�� ���� �����ϴ°� �ð����⵵�� ���鿡�� �״��� ���� �˰������� ������ �ʴ´�
 //�翬�� �ð��ʰ� ������ �ϰ� ������״µ� ����Ǽ� ��Ȳ������
-public class findNumberOnKth {
+public class FindNumberOnKth {
 
 	public static void main(String[] args) {
-		new findNumberOnKth().solve();
+		new FindNumberOnKth().solve();
 	}
 	public void solve() {
 		int []array = {1, 5, 2, 6, 3, 7, 4};
