@@ -6,47 +6,47 @@ public class Test<T> {
 	
 	public void test(T result, T expect) {
 		if(expect.equals(result)) {
-			System.out.println("Pass");
+			System.out.println("==========Pass==========");
 		}else {
 			String template = "Expect %s but %s returned";
 			System.out.println(String.format(template, expect, result));
-			alert("Fail");
+			alert("==========Fail==========");
 		}
 	}
 	public void test(int[] result, int[] expect) {
 		if(equals(result, expect)) {
-			System.out.println("Pass");
+			System.out.println("==========Pass==========");
 		}else {
 			System.out.println("Expect " + toString(expect));
 			System.out.println("But " + toString(result) + " returned");
-			alert("Fail");
+			alert("==========Fail==========");
 		}
 	}
 	public void test(long[] result, long[] expect) {
 		if(equals(result, expect)) {
-			System.out.println("Pass");
+			System.out.println("==========Pass==========");
 		}else {
 			System.out.println("Expect " + toString(expect));
 			System.out.println("But " + toString(result) + " returned");
-			alert("Fail");
+			alert("==========Fail==========");
 		}
 	}
 	public void test(String[] result, String[] expect) {
 		if(equals(result, expect)) {
-			System.out.println("Pass");
+			System.out.println("==========Pass==========");
 		}else {
 			System.out.println("Expect " + toString(expect));
 			System.out.println("But    " + toString(result) + " returned");
-			alert("Fail");
+			alert("==========Fail==========");
 		}
 	}
 	public void test(int[][] result, int[][] expect) {
 		if(equals(result, expect)) {
-			System.out.println("Pass");
+			System.out.println("==========Pass==========");
 		}else {
 			System.out.println("Expect " + toString(expect));
 			System.out.println("But " + toString(result) + " returned");
-			alert("Fail");
+			alert("==========Fail==========");
 		}
 	}
 	
@@ -150,7 +150,8 @@ public class Test<T> {
 		sb.append(toString(arr[size-1]));
 		sb.append("]");
 		return sb.toString();
-	}	
+	}
+	
 	public void alert(String alert) {
 		System.out.println(alert);
 	}
