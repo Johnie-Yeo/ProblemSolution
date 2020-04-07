@@ -20,7 +20,7 @@ public class Advertisement {
 		System.out.println(result);
 	}
 	public void test() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		
 		int length = 5;
 		String current = "aaaaa";

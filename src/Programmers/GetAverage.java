@@ -7,7 +7,7 @@ public class GetAverage {
 		new GetAverage().solve();
 	}
 	public void solve() {
-		Test<Double> test = new Test<>();
+		Test test = new Test();
 		int[] input1 = {1,2,3,4};
 		double result = 2.5;
 		

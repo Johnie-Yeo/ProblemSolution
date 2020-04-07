@@ -9,7 +9,7 @@ public class MoveTerrain {
         new MoveTerrain().test();
     }
     private void test(){
-        Test<Integer> test = new Test<Integer>();
+        Test test = new Test();
 
         int[][] land = {
                 {1,   4,  8, 10},

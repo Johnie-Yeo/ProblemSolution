@@ -7,7 +7,7 @@ public class CollatzGuess {
 		new CollatzGuess().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		int input = 6;
 		int result = 8;
 		

@@ -7,7 +7,7 @@ public class NumberListWithXGap {
 		new NumberListWithXGap().solve();
 	}
 	public void solve() {
-		Test<Object> test = new Test<>();
+		Test test = new Test();
 		int x = 2;
 		int n = 5;
 		long[] result = {2,4,6,8,10};

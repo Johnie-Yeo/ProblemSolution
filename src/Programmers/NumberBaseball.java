@@ -9,7 +9,7 @@ public class NumberBaseball {
 		new NumberBaseball().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 
 		int[][] baseball = {
 				{123, 1, 1}, {356, 1, 0}, 

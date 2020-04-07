@@ -7,7 +7,7 @@ public class BracketConvert {
 		new BracketConvert().solve();
 	}
 	public void solve() {
-		Test<String> test = new Test<>();
+		Test test = new Test();
 		
 		String input = "(()())()";
 		String expect = "(()())()";

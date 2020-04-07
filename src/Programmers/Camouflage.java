@@ -9,7 +9,7 @@ public class Camouflage {//위장
 		new Camouflage().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<Integer>();
+		Test test = new Test();
 		
 		String[][] clothes = {
 				{"yellow_hat", "headgear"}, 

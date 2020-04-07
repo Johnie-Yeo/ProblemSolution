@@ -10,7 +10,7 @@ public class BriansConcern{
         new BriansConcern().test();
     }
     public void test(){
-        Test<String> test = new Test<String>();
+        Test test = new Test();
 
         String sentence = "HaEaLaLaObWORLDb";
         String expect = "HELLO WORLD";

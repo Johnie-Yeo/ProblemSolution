@@ -7,7 +7,7 @@ public class CorrectBracket {
 		new CorrectBracket().solve();
 	}
 	public void solve() {
-		Test<Boolean> test = new Test<>();
+		Test test = new Test();
 
 		String input = "()()";
 		boolean expect = true;

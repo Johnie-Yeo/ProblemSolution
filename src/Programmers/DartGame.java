@@ -17,7 +17,7 @@ public class DartGame {
 		new DartGame().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		
 		String input = "1S2D*3T";
 		int expect = 37;//1^1 * 2 + 2^2 * 2 + 3^3

@@ -7,7 +7,7 @@ public class MatrixAdd {
 		new MatrixAdd().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 
 		int[][] arr1 = {{1,2},{2,3}};
 		int[][] arr2 = {{3,4},{5,6}};

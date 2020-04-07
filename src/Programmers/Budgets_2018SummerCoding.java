@@ -9,7 +9,7 @@ public class Budgets_2018SummerCoding {
 		new Budgets_2018SummerCoding().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		int[] d = {1,3,2,5,4};
 		int budget = 9;
 		int result = 3;

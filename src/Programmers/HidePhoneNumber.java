@@ -7,7 +7,7 @@ public class HidePhoneNumber {
 		new HidePhoneNumber().solve();
 	}
 	public void solve() {
-		Test<String> test = new Test<>();
+		Test test = new Test();
 		String input  = "01033334444";	
 		String result = "*******4444";
 		test.test(solution(input), result);

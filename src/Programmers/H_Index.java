@@ -7,7 +7,7 @@ public class H_Index {
 		new H_Index().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		
 		int[] citations = {3, 0, 6, 1, 5};
 		int expect = 3;

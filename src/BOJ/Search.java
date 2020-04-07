@@ -35,7 +35,7 @@ public class Search {
 		return result;
 	}
 	public void test() {
-		Test<Object> test = new Test<>();
+		Test test = new Test();
 		
 		String T = "ABC ABCDAB ABCDABCDABDE";
 		String P = "ABCDABD";

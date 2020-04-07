@@ -9,7 +9,7 @@ public class FoldPaper{
         new FoldPaper().test();
     }
     public void test(){
-        Test<Integer> test = new Test<Integer>();
+        Test test = new Test();
 
         int n = 1;
         int[] result = solution(n);

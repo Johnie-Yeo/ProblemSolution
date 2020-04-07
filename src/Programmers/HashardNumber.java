@@ -7,7 +7,7 @@ public class HashardNumber {
 		new HashardNumber().solve();
 	}
 	public void solve() {
-		Test<Boolean> test = new Test<>();
+		Test test = new Test();
 		
 		int input = 10;
 		boolean result = true;

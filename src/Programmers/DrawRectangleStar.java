@@ -7,7 +7,7 @@ public class DrawRectangleStar {
 		new DrawRectangleStar().solve();
 	}
 	public void solve() {
-		Test<String> test = new Test<>();
+		Test test = new Test();
 		
 		int m = 5;
 		int n = 3;

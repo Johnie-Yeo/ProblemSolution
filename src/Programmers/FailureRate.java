@@ -11,7 +11,7 @@ public class FailureRate {
 		new FailureRate().solve();
 	}
 	public void solve() {
-		Test<Object> test = new Test<>();
+		Test test = new Test();
 		int N = 5;
 		int[] stages = {2, 1, 2, 6, 2, 4, 3, 3};
 		int[] expect = {3,4,2,1,5};

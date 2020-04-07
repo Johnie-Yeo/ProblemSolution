@@ -2,28 +2,49 @@ package Test;
 
 import java.util.*;
 
-public class Test<T> {
-	public final String ANSI_RESET = "\u001B[0m";    
+public class Test {
+	public final String ANSI_RESET = "\u001B[0m";	
 	public final String ANSI_RED = "\u001B[31m";
-	
-	public void test(T result, T expect) {
-		if(expect.equals(result)) {
-			System.out.println("==========Pass==========");
-		}else {
-			String template = "Expect %s but %s returned";
-			System.out.println(String.format(template, expect, result));
-			alert("==========Fail==========");
-		}
-	}
-	public <T> void test(List<T> result, List<T> expect){
-		if(equals(result, expect)){
+
+	public void test(int result, int expect){
+		if(result == expect){
 			System.out.println("==========Pass==========");
 		}else{
-			System.out.print("Expect " + toString(expect));
-			System.out.println(", But " + toString(result) + " returned.");
+			System.out.println("Expect " + expect);
+			System.out.println("But " + result + " returned");
 			alert("==========Fail==========");
 		}
 	}
+
+	public void test(double result, double expect){
+		if(result == expect){
+			System.out.println("==========Pass==========");
+		}else{
+			System.out.println("Expect " + expect);
+			System.out.println("But " + result + " returned");
+			alert("==========Fail==========");
+		}
+	}
+
+	public void test(boolean result, boolean expect){
+		if(result == expect){
+			System.out.println("==========Pass==========");
+		}else{
+			System.out.println("Expect " + expect);
+			System.out.println("But " + result + " returned");
+			alert("==========Fail==========");
+		}
+	}
+	public void test(String result, String expect){
+		if(result.equals(expect)){
+			System.out.println("==========Pass==========");
+		}else{
+			System.out.println("Expect " + expect);
+			System.out.println("But " + result + " returned");
+			alert("==========Fail==========");
+		}
+	}
+
 	public void test(int[] result, int[] expect) {
 		if(equals(result, expect)) {
 			System.out.println("==========Pass==========");
@@ -87,7 +108,7 @@ public class Test<T> {
 		if(length != b.length) {
 			return false;
 		}
-		
+
 		for(int index = 0; index < length; index++) {
 			if(a[index] != b[index]) {
 				return false;
@@ -100,7 +121,7 @@ public class Test<T> {
 		if(length != b.length) {
 			return false;
 		}
-		
+
 		for(int index = 0; index < length; index++) {
 			if(a[index] != b[index]) {
 				return false;
@@ -113,7 +134,7 @@ public class Test<T> {
 		if(length != b.length) {
 			return false;
 		}
-		
+
 		for(int index = 0; index < length; index++) {
 			if(!a[index].equals(b[index])) {
 				return false;
@@ -126,7 +147,7 @@ public class Test<T> {
 		if(length != b.length) {
 			return false;
 		}
-		
+
 		for(int index = 0; index < length; index++) {
 			if(!equals(a[index], b[index])) {
 				return false;
@@ -219,7 +240,7 @@ public class Test<T> {
 		sb.append("]");
 		return sb.toString();
 	}
-	
+
 	public void alert(String alert) {
 		System.out.println(alert);
 	}

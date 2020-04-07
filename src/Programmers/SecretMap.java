@@ -7,7 +7,7 @@ public class SecretMap {
 		new SecretMap().solve();
 	}
 	public void solve() {
-		Test<Object> test = new Test<>();
+		Test test = new Test();
 		int n = 5;
 		int[] arr1 = {9, 20, 28, 18, 11};
 		int[] arr2 = {30, 1, 21, 17, 28};

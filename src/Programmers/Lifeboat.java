@@ -9,7 +9,7 @@ public class Lifeboat {
 		new Lifeboat().solve();
 	}
 	public void solve() {
-		Test<Integer> test = new Test<>();
+		Test test = new Test();
 		
 		int[] people = {70, 50, 80, 50};
 		int limit = 100;
