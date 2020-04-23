@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import Test.Test;
+import Test.OldTest;
 
 public class Search {
 	public static void main(String[] args) throws IOException {
@@ -35,7 +35,7 @@ public class Search {
 		return result;
 	}
 	public void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		String T = "ABC ABCDAB ABCDABCDABDE";
 		String P = "ABCDABD";

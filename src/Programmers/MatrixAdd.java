@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class MatrixAdd {
 	public static void main(String[] args) {
 		new MatrixAdd().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int[][] arr1 = {{1,2},{2,3}};
 		int[][] arr2 = {{3,4},{5,6}};

@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class CollatzGuess {
 	public static void main(String[] args) {
 		new CollatzGuess().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		int input = 6;
 		int result = 8;
 		

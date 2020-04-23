@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Stack;
 
@@ -10,7 +10,7 @@ public class CranePuppeteer {
         new CranePuppeteer().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
         int[][] board = {
                 {0,0,0,0,0},
                 {0,0,1,0,3},

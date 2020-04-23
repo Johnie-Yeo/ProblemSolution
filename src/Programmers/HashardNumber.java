@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class HashardNumber {
 	public static void main(String[] args) {
 		new HashardNumber().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		int input = 10;
 		boolean result = true;

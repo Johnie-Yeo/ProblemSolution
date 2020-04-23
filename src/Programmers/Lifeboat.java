@@ -2,14 +2,14 @@ package Programmers;
 
 import java.util.Arrays;
 
-import Test.Test;
+import Test.OldTest;
 
 public class Lifeboat {
 	public static void main(String[] args) {
 		new Lifeboat().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		int[] people = {70, 50, 80, 50};
 		int limit = 100;

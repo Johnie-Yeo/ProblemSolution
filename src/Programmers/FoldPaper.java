@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public class FoldPaper{
         new FoldPaper().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int n = 1;
         int[] result = solution(n);

@@ -2,7 +2,7 @@ package Programmers;
 
 import java.util.Stack;
 
-import Test.Test;
+import Test.OldTest;
 
 public class DartGame {
 	public final char STANDARD_POINT = 'S';
@@ -17,7 +17,7 @@ public class DartGame {
 		new DartGame().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		String input = "1S2D*3T";
 		int expect = 37;//1^1 * 2 + 2^2 * 2 + 3^3

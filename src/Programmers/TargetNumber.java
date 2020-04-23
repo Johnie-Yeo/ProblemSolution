@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 // https://programmers.co.kr/learn/courses/30/lessons/43165
 public class TargetNumber{
     public static void main(String[] args) {
         new TargetNumber().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[]numbers = {1, 1, 1, 1, 1};
         int target = 3;

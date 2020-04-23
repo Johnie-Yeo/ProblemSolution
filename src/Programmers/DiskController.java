@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ public class DiskController {
         new DiskController().test();
     }
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[][] jobs = {{0, 3}, {2, 6}, {1, 9}};
         int expect = 9;

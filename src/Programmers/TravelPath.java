@@ -1,8 +1,7 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ public class TravelPath{
         new TravelPath().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String[][] tickets = {{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}};
         String[] expect = {"ICN", "JFK", "HND", "IAD"};

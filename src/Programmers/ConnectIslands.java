@@ -2,7 +2,7 @@
 
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ public class ConnectIslands {
         new ConnectIslands().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int n = 4;
         int[][] costs = {

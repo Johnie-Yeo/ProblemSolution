@@ -2,7 +2,7 @@ package BOJ;
 
 import java.util.Scanner;
 
-import Test.Test;
+import Test.OldTest;
 
 public class Advertisement {
 	public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class Advertisement {
 		System.out.println(result);
 	}
 	public void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		int length = 5;
 		String current = "aaaaa";

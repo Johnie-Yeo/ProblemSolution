@@ -1,14 +1,14 @@
 //https://programmers.co.kr/learn/courses/30/lessons/12902
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class Tiling3N{
     public static void main(String[] args) {
         new Tiling3N().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[] expects = {
                 3, 11, 41, 153,  571,

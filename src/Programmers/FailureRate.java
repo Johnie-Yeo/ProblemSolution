@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import Test.Test;
+import Test.OldTest;
 
 public class FailureRate {
 	public static void main(String[] args) {
 		new FailureRate().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		int N = 5;
 		int[] stages = {2, 1, 2, 6, 2, 4, 3, 3};
 		int[] expect = {3,4,2,1,5};

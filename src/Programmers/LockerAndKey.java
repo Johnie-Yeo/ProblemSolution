@@ -1,14 +1,14 @@
 //https://programmers.co.kr/learn/courses/30/lessons/60059
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class LockerAndKey{
     public static void main(String[] args) {
         new LockerAndKey().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[][] key = {
                 {0, 0, 0},

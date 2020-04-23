@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class PathToSchool{
     public static void main(String[] args) {
         new PathToSchool().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int m = 4;
         int n = 3;

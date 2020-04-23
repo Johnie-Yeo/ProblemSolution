@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class NumberListWithXGap {
 	public static void main(String[] args) {
 		new NumberListWithXGap().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		int x = 2;
 		int n = 5;
 		long[] result = {2,4,6,8,10};

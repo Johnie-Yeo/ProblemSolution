@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class GetAverage {
 	public static void main(String[] args) {
 		new GetAverage().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		int[] input1 = {1,2,3,4};
 		double result = 2.5;
 		

@@ -1,15 +1,13 @@
 package Programmers;
 
-import Test.Test;
-
-import java.util.Arrays;
+import Test.OldTest;
 
 public class Immigration {
     public static void main(String[] args) {
         new Immigration().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int n = 6;
         int[] times = {7, 10};

@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.*;
 // Programmers 지형 이동
@@ -9,7 +9,7 @@ public class MoveTerrain {
         new MoveTerrain().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[][] land = {
                 {1,   4,  8, 10},

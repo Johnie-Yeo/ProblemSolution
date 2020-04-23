@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class CorrectBracket {
 	public static void main(String[] args) {
 		new CorrectBracket().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input = "()()";
 		boolean expect = true;

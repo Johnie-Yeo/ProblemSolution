@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class SecretMap {
 	public static void main(String[] args) {
 		new SecretMap().solve();
 	}
 	public void solve() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		int n = 5;
 		int[] arr1 = {9, 20, 28, 18, 11};
 		int[] arr2 = {30, 1, 21, 17, 28};
