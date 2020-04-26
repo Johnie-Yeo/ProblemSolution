@@ -9,13 +9,13 @@ public class Result{
         this.message = message;
     }
 
-    public boolean getPassOrFail(){
+    public boolean getResult(){
         return this.pass;
     }
     public String getMessage(){
         return this.message;
     }
-    public void print(){
+    public void printResult(){
         System.out.println(getMessage());
     }
 }
