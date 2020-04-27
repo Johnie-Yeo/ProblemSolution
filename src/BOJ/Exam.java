@@ -1,7 +1,7 @@
 package BOJ;
 import java.util.Scanner;
 
-public class Test {
+public class Exam {
 public static void main(String[] args) {
 	Scanner kb= new Scanner(System.in);
 	int n =kb.nextInt();
