@@ -97,6 +97,23 @@ public class TurnTheDisk{
         result = turnDisk(N, M, T, map, x, d, k);
         expect = 0;
         test.test(result, expect).printResult();
+
+        N = 3; M = 4; T = 4;
+        map = new int[][]{
+                {1, 1, 2, 3},
+                {5, 2, 4, 2},
+                {3, 1, 3, 5}
+        };
+        x = new int[T];
+        d = new int[T];
+        k = new int[T];
+        x[0] = 2; d[0] = 0; k[0] = 1;
+        x[1] = 3; d[1] = 1; k[1] = 3;
+        x[2] = 2; d[2] = 0; k[2] = 2;
+        x[3] = 3; d[3] = 1; k[3] = 1;
+        result = turnDisk(N, M, T, map, x, d, k);
+        expect = 0;
+        test.test(result, expect).printResult();
     }
 
     private void solve(){
@@ -158,7 +175,7 @@ public class TurnTheDisk{
     private double getAverage(int n, int m, int[][] map) {
         int sum = getSum(n, m, map);
         int count = getCount(n, m, map);
-        return sum / count;
+        return (double)sum / count;
     }
 
     private int getCount(int n, int m, int[][] map) {
@@ -217,7 +234,7 @@ public class TurnTheDisk{
                     y = m-1;
                 }else if(y >= m){
                     y = 0;
-                }else if(x < 0 || x >= m || map[x][y] == 0){
+                }else if(x < 0 || x >= n || map[x][y] == 0){
                     continue;
                 }
 
