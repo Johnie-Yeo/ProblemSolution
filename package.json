@@ -1,0 +1,11 @@
+{
+  "name": "Algorithm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Johnie-Yeo/ProblemSolution.git",
+  "author": "Johnie-Yeo <ducl7023@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^26.0.1"
+  }
+}
