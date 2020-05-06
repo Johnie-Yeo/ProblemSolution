@@ -2,14 +2,14 @@ package Programmers;
 
 import java.util.Arrays;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class Budgets_2018SummerCoding {
 	public static void main(String[] args) {
 		new Budgets_2018SummerCoding().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		int[] d = {1,3,2,5,4};
 		int budget = 9;
 		int result = 3;

@@ -2,7 +2,7 @@
 
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ public class IntermittentCamera {
         new IntermittentCamera().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
         int[][] routes = {
                 {-20,15},
                 {-14,-5},

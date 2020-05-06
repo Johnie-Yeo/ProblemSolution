@@ -1,14 +1,14 @@
 //https://programmers.co.kr/learn/courses/30/lessons/42842
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class Carpet{
     public static void main(String[] args) {
         new Carpet().test();
     }
     public void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int brown = 10;
         int red = 2;

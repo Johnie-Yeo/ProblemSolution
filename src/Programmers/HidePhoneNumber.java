@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class HidePhoneNumber {
 	public static void main(String[] args) {
 		new HidePhoneNumber().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		String input  = "01033334444";	
 		String result = "*******4444";
 		test.test(solution(input), result);

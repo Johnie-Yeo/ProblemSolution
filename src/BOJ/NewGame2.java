@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -99,7 +99,7 @@ public class NewGame2{
 //        new NewGame2().solve();
     }
     private void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
         int N, K;
         int[][] map;
         int[][] horse;

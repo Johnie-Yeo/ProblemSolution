@@ -2,14 +2,14 @@
 
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class TileDecoration {
     public static void main(String[] args) {
         new TileDecoration().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int N = 5;
         long expect = 26;

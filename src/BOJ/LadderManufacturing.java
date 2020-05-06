@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -32,7 +32,7 @@ public class LadderManufacturing{
         new LadderManufacturing().test();
     }
     public void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
         int N, M, H;
         int[][] map;
         int result, expect;

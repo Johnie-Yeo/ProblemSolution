@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ public class TravelPath{
         new TravelPath().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         String[][] tickets = {{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}};
         String[] expect = {"ICN", "JFK", "HND", "IAD"};

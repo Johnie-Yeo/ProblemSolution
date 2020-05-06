@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class Bottles {
         new Bottles().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
         int A, B, C;
         int[] result, expect;
 

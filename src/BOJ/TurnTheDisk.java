@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class TurnTheDisk{
 //        app.solve();
     }
     private void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
 
         int N, M, T;
         int[][] map;

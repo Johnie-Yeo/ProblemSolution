@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class DrawRectangleStar {
 	public static void main(String[] args) {
 		new DrawRectangleStar().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		
 		int m = 5;
 		int n = 3;

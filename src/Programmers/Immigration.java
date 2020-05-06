@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class Immigration {
     public static void main(String[] args) {
         new Immigration().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int n = 6;
         int[] times = {7, 10};

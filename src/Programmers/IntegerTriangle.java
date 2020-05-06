@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class IntegerTriangle {
     public static void main(String[] args) {
         new IntegerTriangle().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
         int[][] triangle = {
                 {7},
                 {3, 8},

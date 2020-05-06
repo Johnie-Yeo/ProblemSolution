@@ -1,7 +1,7 @@
 // https://programmers.co.kr/learn/courses/30/lessons/43163
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class ConvertWord {
         new ConvertWord().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         String begin = "hit";
         String target = "cog";

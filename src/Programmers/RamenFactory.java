@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.Collections;
 import java.util.PriorityQueue;
@@ -10,7 +10,7 @@ public class RamenFactory {
         new RamenFactory().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int stock = 4;
         int[] dates = {4, 10, 15};

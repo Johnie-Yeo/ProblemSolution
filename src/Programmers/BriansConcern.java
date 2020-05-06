@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ public class BriansConcern{
         new BriansConcern().test();
     }
     public void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         String sentence = "HaEaLaLaObWORLDb";
         String expect = "HELLO WORLD";

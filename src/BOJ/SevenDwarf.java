@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ public class SevenDwarf{
         new SevenDwarf().test();
     }
     public void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int[] dwarfs = {20, 7, 23, 19, 10, 15, 25, 8, 13};
         int[] result = getSevenDwarf(dwarfs);

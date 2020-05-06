@@ -2,14 +2,14 @@ package Programmers;
 
 import java.util.Arrays;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class NumberBaseball {
 	public static void main(String[] args) {
 		new NumberBaseball().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 
 		int[][] baseball = {
 				{123, 1, 1}, {356, 1, 0}, 

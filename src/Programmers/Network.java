@@ -2,14 +2,14 @@
 
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class Network {
     public static void main(String[] args) {
         new Network().test();
     }
     private void test(){
-        OldTest test = new OldTest();
+        OldestTest test = new OldestTest();
 
         int n = 3;
         int[][] computers = {

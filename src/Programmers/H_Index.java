@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class H_Index {
 	public static void main(String[] args) {
 		new H_Index().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		
 		int[] citations = {3, 0, 6, 1, 5};
 		int expect = 3;

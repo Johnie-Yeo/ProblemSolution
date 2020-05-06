@@ -2,14 +2,14 @@ package Programmers;
 
 import java.util.HashMap;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class Camouflage {//위장
 	public static void main(String[] args) {
 		new Camouflage().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		
 		String[][] clothes = {
 				{"yellow_hat", "headgear"}, 

@@ -1,8 +1,7 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class CubeEditor{
@@ -11,7 +10,7 @@ public class CubeEditor{
         new CubeEditor().test();
     }
     private void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
 
         String input = "abcdabcabb";
         int result = getLongestSearchableString(input);

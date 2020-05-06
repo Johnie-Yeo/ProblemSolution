@@ -1,13 +1,13 @@
 package Programmers;
 
-import Test.OldTest;
+import Test.OldestTest;
 
 public class BracketConvert {
 	public static void main(String[] args) {
 		new BracketConvert().solve();
 	}
 	public void solve() {
-		OldTest test = new OldTest();
+		OldestTest test = new OldestTest();
 		
 		String input = "(()())()";
 		String expect = "(()())()";

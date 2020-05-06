@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -11,7 +11,7 @@ public class Gerrymandering2{
 //        app.solve();
     }
     public void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
 
         int N = 6;
         int[][] map = {

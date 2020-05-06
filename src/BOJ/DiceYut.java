@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -88,7 +88,7 @@ public class DiceYut{
         new DiceYut().test();
     }
     private void test(){
-        Test<Integer> test = new Test<Integer>();
+        OldTest<Integer> test = new OldTest<Integer>();
 
         int[] input;
         int result, expect;
