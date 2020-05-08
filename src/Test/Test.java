@@ -26,6 +26,11 @@ public class Test {
         Integer[] boxedExpect = box(expect);
         return this.test(boxedResult, boxedExpect);
     }
+    public Result test(long[] result, long[] expect){
+        Long[] boxedResult = box(result);
+        Long[] boxedExpect = box(expect);
+        return this.test(boxedResult, boxedExpect);
+    }
     public Result test(int[][] result, int[][] expect){
         Integer[][] boxedResult = box(result);
         Integer[][] boxedExpect = box(expect);
@@ -71,6 +76,9 @@ public class Test {
 
     private Integer[] box(int[] arr){
         return Arrays.stream(arr).boxed().toArray(Integer[]::new);
+    }
+    private Long[] box(long[] arr){
+        return Arrays.stream(arr).boxed().toArray(Long[]::new);
     }
     private Integer[][] box(int[][] array){
         Integer[][] list =
