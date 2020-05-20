@@ -1,126 +1,136 @@
 package BOJ;
 
-import Test.OldTest;
+
+import Test.Test;
 
 import java.util.Scanner;
 
 public class AddBracket{
     private final char PLUS = '+';
     private final char MINUS = '-';
-    private final char MULTIPLE = '*';
+    private final char MULTIPLY = '*';
 
     public static void main(String[] args) {
-//        new AddBracket().solve();
+//        new Main().solve();
         new AddBracket().test();
     }
-
-    private void test() {
-        OldTest<Integer> test = new OldTest<Integer>();
+    private void test(){
+        Test test = new Test();
 
         int N;
-        char[] formula;
+        String formula;
         int result, expect;
 
+//        예제 입력 1
         N = 9;
-        formula = new char[]{'3', '+', '8', '*', '7', '-', '9', '*', '2'};
-        result = maxResult(N, formula);
+        formula = "3+8*7-9*2";
+        result = getMaxResult(N, formula);
         expect = 136;
         test.test(result, expect).printResult();
 
+//        예제 입력 2
         N = 5;
-        formula = new char[]{'8', '*', '3', '+', '5'};
-        result = maxResult(N, formula);
+        formula = "8*3+5";
+        result = getMaxResult(N, formula);
         expect = 64;
         test.test(result, expect).printResult();
 
         N = 7;
-        formula = new char[]{'8', '*', '3', '+', '5', '+', '2'};
-        result = maxResult(N, formula);
+        formula = "8*3+5+2";
+        result = getMaxResult(N, formula);
         expect = 66;
         test.test(result, expect).printResult();
 
         N = 19;
-        formula = "1*2+3*4*5-6*7*8*9*0".toCharArray();
-        result = maxResult(N, formula);
+        formula = "1*2+3*4*5-6*7*8*9*0";
+        result = getMaxResult(N, formula);
         expect = 0;
         test.test(result, expect).printResult();
 
         N = 19;
-        formula = "1*2+3*4*5-6*7*8*9*9".toCharArray();
-        result = maxResult(N, formula);
+        formula = "1*2+3*4*5-6*7*8*9*9";
+        result = getMaxResult(N, formula);
         expect = 426384;
         test.test(result, expect).printResult();
 
         N = 19;
-        formula = "1-9-1-9-1-9-1-9-1-9".toCharArray();
-        result = maxResult(N, formula);
+        formula = "1-9-1-9-1-9-1-9-1-9";
+        result = getMaxResult(N, formula);
         expect = 24;
         test.test(result, expect).printResult();
 
-        N = 9;
-        formula = "1+2*3+4*5".toCharArray();
-        result = maxResult(N, formula);
-        expect = 105;
+        N = 3;
+        formula = "1-9";
+        result = getMaxResult(N, formula);
+        expect = -8;
         test.test(result, expect).printResult();
     }
-
-    private void solve() {
+    private void solve(){
         Scanner kb = new Scanner(System.in);
+
         int N = kb.nextInt();
         String formula = kb.next();
-        int result = maxResult(N, formula.toCharArray());
+        int result = getMaxResult(N, formula);
         System.out.println(result);
+
+        kb.close();
     }
 
-    private int maxResult(int n, char[] formula) {
-        int firstNumber = toInt(formula[0]);
-        if(n == 1){
-            return firstNumber;
-        }
-        int index = 1;
-        int max = dfs(firstNumber, index, n, formula);
+    private int getMaxResult(int size, String formula) {
+        int start = 2;
+        int result = toInt(formula.charAt(0));
+        int max = dfs(start, size, formula.toCharArray(), result);
         return max;
     }
 
-    private int dfs(int cur, int index, int size, char[] formula){
-        if(index >= size){
-            return cur;
-        }
-        char operator = formula[index];
-        int number = toInt(formula[index+1]);
-        int result = operate(cur, operator, number);
+    private int dfs(int start, int size, char[] formula, int result) {
         int max = Integer.MIN_VALUE;
 
-        int tmpResult = dfs(result, index+2, size, formula);
-        max = Math.max(max, tmpResult);
+        if(start -1 >= size){
+            return result;
+        }
 
-        if(index+2 >= size){
+        char prevOperator = getOperator(formula, start-1);
+        int number1 = toInt(formula[start]);
+
+        int cur = calculate(result, prevOperator, number1);
+        int unBind = dfs(start+2, size, formula, cur);//뒤에꺼랑 bind 유무
+        max = Math.max(unBind, max);
+
+        if(start + 1 >= size){
             return max;
         }
-        char nextOperator = formula[index+2];
-        int nextNumber = toInt(formula[index+3]);
-        int tmp = operate(number, nextOperator, nextNumber);
-        result = operate(cur, operator, tmp);
-        tmpResult = dfs(result, index+4, size, formula);
-        max = Math.max(max, tmpResult);
+
+        int number2 = toInt(formula[start+2]);
+        char operator = getOperator(formula, start+1);
+        cur = calculate(number1, operator, number2);
+        cur = calculate(result, prevOperator, cur);
+        int bind = dfs(start+4, size, formula, cur);
+        max = Math.max(bind, max);
 
         return max;
     }
 
-    private int operate(int num1, char operator, int num2) {
+    private char getOperator(char[] formula, int index) {
+        return formula[index];
+    }
+
+    private int calculate(int num1, char operator, int num2){
         switch (operator){
             case PLUS:
                 return num1 + num2;
             case MINUS:
                 return num1 - num2;
-            case MULTIPLE:
+            case MULTIPLY:
                 return num1 * num2;
             default:
-                return 0;
+                System.out.println("Wrong operator!!!!!!!!");
+                System.exit(-1);
+                return -1;
         }
     }
 
-    private int toInt(char number){
-        return number - '0';
+    private int toInt(char c){
+        return c - '0';
     }
 }

@@ -1,161 +1,168 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.Test;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MovingPipe1{
-    private final int[] dirX = {0, 1, 1};
-    private final int[] dirY = {1, 0, 1};
-    private final int RIGHT = 0;
-    private final int DOWN = 1;
-    private final int DIAGONAL = 2;
-    private final int WALL = 1;
-
     public static void main(String[] args) {
-//        new MovingPipe1().solve();
+//        new Main().solve();
         new MovingPipe1().test();
     }
 
     private void test() {
-        OldTest<Integer> test = new OldTest<Integer>();
+        Test test = new Test();
 
         int N;
         int[][] map;
         int result, expect;
+        String input;
 
         N = 3;
-        map = new int[][]{
-                {0, 0, 0},
-                {0, 0, 0},
-                {0, 0, 0}
-        };
-        result = getNumberOfSolution(N, map);
+        input = "0 0 0\n" +
+                "0 0 0\n" +
+                "0 0 0";
+        map = parseInt2DArray(input);
+        result = getNumberOfCombinationToConnectPipeToEnd(N, map);
         expect = 1;
         test.test(result, expect).printResult();
 
         N = 4;
-        map = new int[][]{
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0}
-        };
-        result = getNumberOfSolution(N, map);
+        input = "0 0 0 0\n" +
+                "0 0 0 0\n" +
+                "0 0 0 0\n" +
+                "0 0 0 0";
+        map = parseInt2DArray(input);
+        result = getNumberOfCombinationToConnectPipeToEnd(N, map);
         expect = 3;
         test.test(result, expect).printResult();
 
         N = 5;
-        map = new int[][]{
-                {0, 0, 1, 0, 0},
-                {0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0}
-        };
-        result = getNumberOfSolution(N, map);
+        input = "0 0 1 0 0\n" +
+                "0 0 0 0 0\n" +
+                "0 0 0 0 0\n" +
+                "0 0 0 0 0\n" +
+                "0 0 0 0 0";
+        map = parseInt2DArray(input);
+        result = getNumberOfCombinationToConnectPipeToEnd(N, map);
         expect = 0;
         test.test(result, expect).printResult();
 
         N = 6;
-        map = new int[][]{
-                {0, 0, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0}
-        };
-        result = getNumberOfSolution(N, map);
+        input = "0 0 0 0 0 0\n" +
+                "0 1 0 0 0 0\n" +
+                "0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0";
+        map = parseInt2DArray(input);
+        result = getNumberOfCombinationToConnectPipeToEnd(N, map);
         expect = 13;
         test.test(result, expect).printResult();
     }
 
-    private void solve() {
+    private void solve(){
         Scanner kb = new Scanner(System.in);
 
-        int N = kb.nextInt();
-        int[][] map = new int[N][N];
+        int N = Integer.parseInt(kb.nextLine());
+        StringBuilder sb = new StringBuilder();
+
         for(int i = 0; i < N; i++){
-            for(int j = 0; j < N; j++){
-                map[i][j] = kb.nextInt();
-            }
+            sb.append(kb.nextLine());
+            sb.append("\n");
         }
-
         kb.close();
-
-        int result = getNumberOfSolution(N, map);
+        int[][] map = parseInt2DArray(sb.toString());
+        int result = getNumberOfCombinationToConnectPipeToEnd(N, map);
         System.out.println(result);
     }
 
-    private int getNumberOfSolution(int n, int[][] map) {
-        int[][][] pipe = initPipe(n);
+    private int[][] parseInt2DArray(String input){
+        int[][] result = Arrays.stream(input.split("\n"))
+                            .map(e -> parseIntArray(e))
+                            .toArray(int[][]::new);
+        return result;
+    }
+    private int[] parseIntArray(String input){
+        input = input.trim();
+        int[] result = Arrays.stream(input.split(" "))
+                            .mapToInt(e -> Integer.parseInt(e)).toArray();
+        return result;
+    }
+
+    private final int HORIZONTAL = 0;
+    private final int VERTICAL = 1;
+    private final int SLASH = 2;
+    private final int[] dirX = {0, -1, -1};
+    private final int[] dirY = {-1, 0, -1};
+    private final int EMPTY = 0;
+    private final int WALL = 1;
+
+    private int getNumberOfCombinationToConnectPipeToEnd(int n, int[][] map) {
+        int [][][] dp = new int[n][n][3];
+        int x = 0, y = 1;
+        dp[x][y][HORIZONTAL] = 1;
 
         for(int i = 0; i < n; i++){
-            for(int j = 1; j < n; j++){
-                if(!isWall(i, j, map)){
-                    putPipe(RIGHT, pipe, map, i, j, n);
-                    putPipe(DOWN,pipe, map, i, j, n);
-                    putDiagonalPipe(pipe, map, i, j, n);
+            for(int j = 2; j < n; j++){
+                for(int d = 0; d < 3; d++){
+                    if(d == SLASH){
+                        if(isInfeasibleToSlash(map, i, j, n)){
+                            continue;
+                        }
+                    }
+                    if(map[i][j] == EMPTY){
+                        dp[i][j][d] = getNumberOfPipe(dp, i, j, d, n);
+                    }
                 }
             }
         }
 
-        int sum = getSum(pipe[n-1][n-1]);
-        return sum;
+        return sum(dp[n-1][n-1]);
     }
 
-    private void putDiagonalPipe(int[][][] pipe, int[][] map, int i, int j, int n) {
-        int x = i + dirX[RIGHT];
-        int y = j + dirY[RIGHT];
-        if(!isOutOfRange(x, y, n) && isWall(x, y, map)){
-            return;
+    private boolean isInfeasibleToSlash(int[][] map, int i, int j, int n) {
+        int x = i-1;
+        int y = j;
+        if(isOutOfRange(x, y, n) || map[x][y] == WALL){
+            return true;
         }
-        x = i + dirX[DOWN];
-        y = j + dirY[DOWN];
-        if(!isOutOfRange(x, y, n) && isWall(x, y, map)){
-            return;
+        x = i;
+        y = j-1;
+        if(isOutOfRange(x, y, n) || map[x][y] == WALL){
+            return true;
         }
-
-        x = i + dirX[DIAGONAL];
-        y = j + dirY[DIAGONAL];
-        if(isOutOfRange(x, y, n) || isWall(x, y, map)){
-            return;
-        }
-        pipe[x][y][DIAGONAL] = getSum(pipe[i][j]);
+        return false;
     }
 
-    private void putPipe(int dir, int[][][] pipe, int[][] map, int i, int j, int n) {
+    private int getNumberOfPipe(int[][][] map, int i, int j, int dir, int n) {
         int x = i + dirX[dir];
         int y = j + dirY[dir];
-        if(isOutOfRange(x, y, n) || isWall(x, y, map)){
-            return;
+        if(isOutOfRange(x, y, n)){
+            return 0;
         }
-        pipe[x][y][dir] = pipe[i][j][dir] + pipe[i][j][DIAGONAL];
+        switch(dir){
+            case HORIZONTAL:
+                return map[x][y][HORIZONTAL] + map[x][y][SLASH];
+            case VERTICAL:
+                return map[x][y][VERTICAL] + map[x][y][SLASH];
+            case SLASH:
+                return map[x][y][HORIZONTAL] + map[x][y][VERTICAL] + map[x][y][SLASH];
+            default:
+                return -1;
+        }
     }
 
-    private boolean isWall(int x, int y, int[][] map) {
-        return map[x][y] == WALL;
+    private int sum(int[] arr){
+        int sum = 0;
+        for(int elem : arr){
+            sum += elem;
+        }
+        return sum;
     }
 
     private boolean isOutOfRange(int x, int y, int n) {
         return (x < 0 || y < 0 || x >= n || y >= n);
-    }
-
-
-    private int getSum(int[] arr) {
-        int sum = 0;
-        for(int element : arr){
-            sum += element;
-        }
-        return sum;
-    }
-
-    private int[][][] initPipe(int n){
-        int[][][] pipe = new int[n][n][3];
-
-        pipe[0][1][RIGHT] = 1;
-
-        return pipe;
     }
 }

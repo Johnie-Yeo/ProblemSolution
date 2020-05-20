@@ -1,235 +1,280 @@
 package BOJ;
+import Test.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 //BOJ 12100
 
-//���� ������ �� �Ʒ��� Ŀ�ǵ忡 ���� �޼��带 ����� ���� dfs�ϸ� ��
 public class Game2048 {
-	final int LEFT = 0;
-	final int RIGHT = 1;
-	final int UP = 2;
-	final int DOWN = 3;
-	
-	final int []dirX = {0, 0, -1, 1};
-	final int []dirY = {-1, 1, 0, 0};
-	
+	private final int MAX_MOVE = 5;
+	private final int UP = 0;
+	private final int LEFT = 1;
+	private final int DOWN = 2;
+	private final int RIGHT = 3;
+
 	public static void main(String[] args) {
-		new Game2048().solve();
+//		new Main().solve();
+		new Game2048().test();
 	}
-	public void solve() {
+	private void test(){
+		Test test = new Test();
+
+		int N;
+		int[][] map;
+		int result, expect;
+
+		N = 3;
+		map = new int[][]{
+				{2, 2, 2},
+				{4, 4, 4},
+				{8, 8, 8},
+		};
+		result = getMaxBlock(N, map);
+		expect = 16;
+		test.test(result, expect).printResult();
+
+		N = 3;
+		map = new int[][]{
+				{4, 4, 8},
+				{4, 4, 8},
+				{8, 8, 16},
+		};
+		result = getMaxBlock(N, map);
+		expect = 64;
+		test.test(result, expect).printResult();
+
+		N = 4;
+		map = new int[][]{
+				{4, 4, 8, 16},
+				{4, 4, 8, 16},
+				{8, 8, 16, 32},
+				{0,0,0,0}
+		};
+		result = getMaxBlock(N, map);
+		expect = 128;
+		test.test(result, expect).printResult();
+
+		N = 4;
+		map = new int[][]{
+				{2, 2, 2, 2},
+				{0, 0, 0, 0},
+				{0, 0, 0, 0},
+				{0, 0, 0, 0}
+
+		};
+		result = getMaxBlock(N, map);
+		expect = 8;
+		test.test(result, expect).printResult();
+	}
+
+	private void solve(){
 		Scanner kb = new Scanner(System.in);
-		int n = kb.nextInt();
-		int [][]map =  new int[n][n];
-		for(int i = 0; i < n ; i++) {
-			for(int j = 0; j < n; j++) {
+
+		int N = kb.nextInt();
+		int[][] map = new int[N][N];
+		for(int i = 0; i < N; i++){
+			for(int j = 0; j < N; j++){
 				map[i][j] = kb.nextInt();
 			}
 		}
+		int result = getMaxBlock(N, map);
+		System.out.println(result);
 		kb.close();
-
-		int numOfPlay = 5;
-		int max = getMax(n, map);
-		
-		max = getMaxBlock(n, map, numOfPlay, max);
-		System.out.println(max);
 	}
-	public int getMax(int n, int[][] map) {
+	private class Board{
+		int[][] map;
+		int count;
+		public Board(int count, int[][] map){
+			this.count = count;
+			this.map = clone(map);
+		}
+		private int[][] clone(int[][] arr){
+			int size = arr.length;
+			int[][] clone = new int[size][];
+			for(int i = 0; i < size; i++){
+				clone[i] = arr[i].clone();
+			}
+			return clone;
+		}
+	}
+	private int getMaxBlock(int n, int[][] map) {
+		Queue<Board> queue = new LinkedList<>();
+		queue.add(new Board(0, map));
 		int max = 0;
-		
-		for(int i = 0; i < n; i++)
-			for(int j = 0; j < n; j++)
-				if(map[i][j] > max)
-					max = map[i][j];
-		
+
+		while(!queue.isEmpty()){
+			Board cur = queue.poll();
+			int[][] board = cur.map;
+			int count = cur.count;
+			if(count >= MAX_MOVE){
+				break;
+			}
+
+			for(int d = 0; d < 4; d++){
+				int[][] moved = move(d, n, board);
+				int tmp = getMax(moved);
+				max = Math.max(max, tmp);
+				queue.add(new Board(count+1, moved));
+			}
+		}
 		return max;
 	}
-	public int getMaxBlock(int n, int[][] map, int numOfPlay, int maxBlock) {
-		if(numOfPlay == 0) {
-			return maxBlock;
-		}else {
-			int max = maxBlock;
-			int [][]tmpMap = new int[n][n];
 
-			for(int dir = 0; dir <= 3; dir++) {
-				copyMap(n, tmpMap, map); //�����Ѽ� ����
-				
-				int move = moveDir(n, tmpMap, maxBlock, dir);
-				if(!isSame(n, map, tmpMap))
-					move = getMaxBlock(n, tmpMap, numOfPlay-1, move);
-				if(max < move)
-					max = move;
-			}
-			
-			return max;
+	private int[][] move(int dir, int n, int[][] map) {
+		switch (dir){
+			case UP:
+				return moveUp(n, map);
+			case DOWN:
+				return moveDown(n, map);
+			case LEFT:
+				return moveLeft(n, map);
+			case RIGHT:
+				return moveRight(n, map);
+			default:
+				return null;
 		}
 	}
-	
-	public int moveDir(int n, int[][] map, int maxBlock, int dir) {
-		
-		int max = maxBlock;//�߻��ϴ� �ִ�
 
-		if(dir == 0) {
-			for(int i = 0; i < n; i++) {
-				int start = 0;
-				stickToDirection(n, map, LEFT, i);
+	private int[][] moveUp(int n, int[][] map) {
+		int[][] moved = new int[n][n];
 
-				while(start < n - 1 && map[i][start] > 0) {
-					if(map[i][start] == map[i][start+1]) {
-						map[i][start] += map[i][start+1];
-						map[i][start+1] = 0;
-						if(map[i][start] > max)
-							max = map[i][start];
-
-						start += 2;
-					}else {
-						start++;
+		for(int i = 0; i < n; i++){
+			ArrayList<Integer> column = new ArrayList<>();
+			int store = -1;
+			for(int j = 0; j < n; j++){
+				if(map[j][i] > 0){
+					if(store < 0){
+						store = map[j][i];
+					}else{
+						if(store == map[j][i]){
+							column.add(store*2);
+							store = -1;
+						}else{
+							column.add(store);
+							store = map[j][i];
+						}
 					}
 				}
-
-				stickToDirection(n, map, LEFT, i);
 			}
-		}else if(dir == 1) {
-			for(int i = 0; i < n; i++) {
-				int start = n - 1;
-				stickToDirection(n, map, RIGHT, i);
-
-				while(start >  0 && map[i][start] > 0) {
-					if(map[i][start] == map[i][start-1]) {
-						map[i][start] += map[i][start-1];
-						map[i][start-1] = 0;
-						if(map[i][start] > max)
-							max = map[i][start];
-
-						start -= 2;
-					}else {
-						start--;
-					}
-				}
-
-				stickToDirection(n, map, RIGHT, i);
+			if(store > 0){
+				column.add(store);
 			}
-		}else if(dir == 2) {
-			for(int i = 0; i < n; i++) {
-				int start = 0;
-				stickToDirection(n, map, UP, i);
-
-				while(start < n - 1 && map[start][i] > 0) {
-					if(map[start][i] == map[start + 1][i]) {
-						map[start][i] += map[start + 1][i];
-						map[start + 1][i] = 0;
-						if(map[start][i] > max)
-							max = map[start][i];
-
-						start += 2;
-					}else {
-						start++;
-					}
-				}
-
-				stickToDirection(n, map, UP, i);
+			int size = column.size();
+			for(int s = 0; s < size; s++){
+				moved[s][i] = column.get(s);
 			}
-		}else if(dir == 3) {
-			for(int i = 0; i < n; i++) {
-				int start = n-1;
-				stickToDirection(n, map, DOWN, i);
-
-				while(start > 0 && map[start][i] > 0) {
-					if(map[start][i] == map[start-1][i]) {
-						map[start][i] += map[start - 1][i];
-						map[start - 1][i] = 0;
-						if(map[start][i] > max)
-							max = map[start][i];
-
-						start -= 2;	
-					}else {
-						start--;
-					}
-				}
-
-				stickToDirection(n, map, DOWN, i);
-			}
-		}else{
-			return -1;
 		}
-		
+
+		return moved;
+	}
+
+	private int[][] moveDown(int n, int[][] map) {
+		int[][] moved = new int[n][n];
+
+		for(int i = 0; i < n; i++){
+			ArrayList<Integer> column = new ArrayList<>();
+			int store = -1;
+			for(int j = n-1; j >= 0; j--){
+				if(map[j][i] > 0){
+					if(store < 0){
+						store = map[j][i];
+					}else{
+						if(store == map[j][i]){
+							column.add(store*2);
+							store = -1;
+						}else{
+							column.add(store);
+							store = map[j][i];
+						}
+					}
+				}
+			}
+			if(store > 0){
+				column.add(store);
+			}
+			int size = column.size();
+			for(int s = 0; s < size; s++){
+				moved[n-s-1][i] = column.get(s);
+			}
+		}
+
+		return moved;
+	}
+
+	private int[][] moveLeft(int n, int[][] map) {
+		int[][] moved = new int[n][n];
+
+		for(int i = 0; i < n; i++){
+			ArrayList<Integer> row = new ArrayList<>();
+			int store = -1;
+			for(int j = 0; j < n; j++){
+				if(map[i][j] > 0){
+					if(store < 0){
+						store = map[i][j];
+					}else{
+						if(store == map[i][j]){
+							row.add(store*2);
+							store = -1;
+						}else{
+							row.add(store);
+							store = map[i][j];
+						}
+					}
+				}
+			}
+			if(store > 0){
+				row.add(store);
+			}
+			int size = row.size();
+			for(int s = 0; s < size; s++){
+				moved[i][s] = row.get(s);
+			}
+		}
+		return moved;
+	}
+
+	private int[][] moveRight(int n, int[][] map) {
+		int[][] moved = new int[n][n];
+
+		for(int i = 0; i < n; i++){
+			ArrayList<Integer> row = new ArrayList<>();
+			int store = -1;
+			for(int j = n-1; j >= 0; j--){
+				if(map[i][j] > 0){
+					if(store < 0){
+						store = map[i][j];
+					}else{
+						if(store == map[i][j]){
+							row.add(store*2);
+							store = -1;
+						}else{
+							row.add(store);
+							store = map[i][j];
+						}
+					}
+				}
+			}
+			if(store > 0){
+				row.add(store);
+			}
+			int size = row.size();
+			for(int s = 0; s < size; s++){
+				moved[i][n-s-1] = row.get(s);
+			}
+		}
+		return moved;
+	}
+
+	private int getMax(int[][] arrays) {
+		int max = 0;
+		for(int[] arr : arrays){
+			for(int elem : arr){
+				max = Math.max(elem, max);
+			}
+		}
 		return max;
-	}
-	
-	public boolean isSame(int n, int[][] map, int[][] tmpMap) {
-		for(int i = 0; i < n; i++)
-			for(int j = 0; j < n; j++)
-				if(map[i][j] != tmpMap[i][j])
-					return false;
-		return true;
-	}
-	private void copyMap(int n, int[][] tmpMap, int[][] map) {
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++) {
-				tmpMap[i][j] = map[i][j];
-			}
-		}
-	}
-
-	public void stickToDirection(int n, int [][]map, int dir, int index) {//�����¿�� ����
-		if(dir == LEFT) {
-
-			int empty = 0;
-			for(int i = 0; i < n; i++) {
-				if(map[index][i] > 0) {
-					if(empty > 0) {
-						map[index][i-empty] = map[index][i]; // ���ڸ� ���� ��ŭ ����
-						map[index][i] = 0;
-					}
-				}else {
-					empty++;//���ڸ� ���� ����
-				}
-			}
-
-		}else if(dir == RIGHT) {
-
-			int empty = 0;
-			for(int i = n-1; i >= 0; i--) {
-				if(map[index][i] > 0) {
-					if(empty > 0) {
-						map[index][i+empty] = map[index][i]; // ���ڸ� ���� ��ŭ ����
-						map[index][i] = 0;
-					}
-				}else {
-					empty++;//���ڸ� ���� ����
-				}
-			}
-
-		}else if(dir == UP) {
-
-			int empty = 0;
-			for(int i = 0; i < n; i++) {
-				if(map[i][index] > 0) {
-					if(empty > 0) {
-						map[i - empty][index] = map[i][index]; // ���ڸ� ���� ��ŭ ����
-						map[i][index] = 0;
-					}
-				}else {
-					empty++;//���ڸ� ���� ����
-				}
-			}
-
-		}else if(dir == DOWN) {
-
-			int empty = 0;
-			for(int i = n-1; i >= 0; i--) {
-				if(map[i][index] > 0) {
-					if(empty > 0) {
-						map[i + empty][index] = map[i][index]; // ���ڸ� ���� ��ŭ ����
-						map[i][index] = 0;
-					}
-				}else {
-					empty++;//���ڸ� ���� ����
-				}
-			}
-
-		}else {
-			//error
-			return;
-		}
 	}
 }
