@@ -1,113 +1,193 @@
 package BOJ;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+
+import Test.Test;
+
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Snake {
-	public final int []dirX = {-1,0,1,0};
-	public final int []dirY = {0,-1,0,1};
-
-	public final int UP = 0;
-	public final int LEFT = 1;
-	public final int DOWN = 2;
-	public final int RIGHT = 3;
-	
-	public final int APPLE = 2;
-	public final int SNAKE = 1;
-	public final int PATH = 0;
-	
 	public static void main(String[] args) {
-		new Snake().solve();
+//		new Main().solve();
+		new Snake().test();
 	}
-	public class Point{
+	private class Point{
 		int x, y;
-		public Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		public void set(int x, int y) {
+		public Point(int x, int y){
 			this.x = x;
 			this.y = y;
 		}
 	}
-	public class Turn{
-		int sec;
-		char dir;
-		public Turn(int sec, char dir) {
-			this.sec = sec;
-			this.dir = dir;
+	private class Move{
+		int x;
+		char c;
+		public Move(int x, char c){
+			this.x = x;
+			this.c = c;
 		}
 	}
-	public void solve() {
+	private void test() {
+		Test test = new Test();
+
+		int result, expect;
+		String input;
+
+		input= "6\n" +
+				"3\n" +
+				"3 4\n" +
+				"2 5\n" +
+				"5 3\n" +
+				"3\n" +
+				"3 D\n" +
+				"15 L\n" +
+				"17 D";
+		result = buildResult(input);
+		expect = 9;
+		test.test(result, expect).printResult();
+
+		input= "10\n" +
+				"4\n" +
+				"1 2\n" +
+				"1 3\n" +
+				"1 4\n" +
+				"1 5\n" +
+				"4\n" +
+				"8 D\n" +
+				"10 D\n" +
+				"11 D\n" +
+				"13 L";
+		result = buildResult(input);
+		expect = 21;
+		test.test(result, expect).printResult();
+
+		input = "10\n" +
+				"5\n" +
+				"1 5\n" +
+				"1 3\n" +
+				"1 2\n" +
+				"1 6\n" +
+				"1 7\n" +
+				"4\n" +
+				"8 D\n" +
+				"10 D\n" +
+				"11 D\n" +
+				"13 L";
+		result = buildResult(input);
+		expect = 13;
+		test.test(result, expect).printResult();
+	}
+
+	private int buildResult(String input){
+		int index = 0;
+		final String ENTER = "\n";
+		final String SPACE = " ";
+
+		String[] parsed = input.split(ENTER);
+		int N = toInt(parsed[index++]);
+		int K = toInt(parsed[index++]);
+		Point[] apples = new Point[K];
+		for(int i = 0; i < K; i++){
+			String[] tmp = parsed[index++].split(SPACE);
+			int x = toInt(tmp[0]);
+			int y = toInt(tmp[1]);
+			apples[i] = new Point(x, y);
+		}
+		int L = toInt(parsed[index++]);
+		Queue<Move> moves = new LinkedList<>();
+		for(int i = 0; i < L; i++){
+			String[] tmp = parsed[index++].split(SPACE);
+			int x = toInt(tmp[0]);
+			char c = tmp[1].charAt(0);
+			moves.add(new Move(x, c));
+		}
+		return getGameEndPoint(N, K, apples, L, moves);
+	}
+	private int toInt(String s){
+		return Integer.parseInt(s);
+	}
+	private void solve() {
 		Scanner kb = new Scanner(System.in);
-		int N = kb.nextInt();// size of the board
-		int [][]map = new int[N][N];
-		
-		int K = kb.nextInt(); // number of the apple
-		Point []position = new Point[K];
-		for(int k = 0; k < K; k++) {
+
+		int N = kb.nextInt();
+		int K = kb.nextInt();
+		Point[] apples = new Point[K];
+		for(int i = 0; i < K; i++){
 			int x = kb.nextInt();
 			int y = kb.nextInt();
-			position[k] = new Point(x, x);//position of the apple
-			map[x-1][y-1] = APPLE;
+			apples[i] = new Point(x, y);
 		}
-		
-		int L = kb.nextInt();//number of turning what the snake does
-		Turn []turn =  new Turn[L];
-		for(int l = 0; l < L; l++) {
-			int sec = kb.nextInt();
-			char dir = kb.next().charAt(0);
-			turn[l] = new Turn(sec, dir);
+		int L = kb.nextInt();
+		Queue<Move> moves = new LinkedList<>();
+		for(int i = 0; i < L; i++){
+			int x = kb.nextInt();
+			char c = kb.next().charAt(0);
+			moves.add(new Move(x, c));
 		}
-		kb.close();
-		
-		int result = calculateEndOfTheGame(N, map, position, turn);
+		int result = getGameEndPoint(N, K, apples, L, moves);
 		System.out.println(result);
+
+		kb.close();
 	}
-	private int calculateEndOfTheGame(int n, int[][] map, Point[] position, Turn[] turn) {
-		int initDir = RIGHT;
-		Point initPos = new Point(0,0);
-		map[initPos.x][initPos.y] = SNAKE;
-		int sec = 0;
-		int turnIdx = 0;
-		Deque<Point> snake = new ArrayDeque<>();
-		snake.add(initPos);
-		
-		int dir= initDir;
-		int curX = initPos.x + dirX[dir];
-		int curY = initPos.y + dirY[dir];
-		sec++;
-		
-		while(true) {
-			if(curX < 0 || curY < 0 || curX >= n || curY >= n || map[curX][curY] == SNAKE) {
+	private final int SNAKE = 1;
+	private final int APPLE = 2;
+	private final int[] dirX = {0, 1, 0, -1};
+	private final int[] dirY = {1, 0, -1, 0};
+	private final char LEFT = 'L';
+	private final char RIGHT = 'D';
+
+	private int getGameEndPoint(int n, int k, Point[] apples, int l, Queue<Move> moves) {
+		int[][] map = setMap(n, apples);
+		int x = 0;
+		int y = 0;
+		map[x][y] = SNAKE;
+		Queue<Point> snakeBody = new LinkedList<>();
+		snakeBody.add(new Point(x, y));
+		int dir = 0;
+		Move move = moves.poll();
+		int time = 0;
+
+		while(true){
+			if(move != null && time == move.x){
+				if(move.c == LEFT){
+					dir = (dir+3)%4;
+				}else if(move.c == RIGHT){
+					dir = (dir+1)%4;
+				}
+				move = moves.poll();
+			}
+			x = x + dirX[dir];
+			y = y + dirY[dir];
+			if(isOutOfRange(x, y, n) || collideWithBody(x, y, map)){
+				time++;
 				break;
 			}
-			
-			snake.add(new Point(curX, curY));//�⺻������ �������� �����Ѵ�.
-			if(map[curX][curY] != APPLE) {//���̰� �þ �� ������ ť�� ���� �� ������
-				Point tmp = snake.removeFirst();
-				map[tmp.x][tmp.y] = PATH;
+
+			if(map[x][y] != APPLE){
+				Point tmp = snakeBody.poll();
+				map[tmp.x][tmp.y] = 0;
 			}
-			
-			map[curX][curY] = SNAKE;
-			
-			if(turnIdx < turn.length && sec == turn[turnIdx].sec) {
-				switch(turn[turnIdx].dir){
-					case 'L' : 
-						dir = (dir+1)%4;
-						break;
-					case 'D':
-						dir = (dir+3)%4;
-						break;
-				}
-				turnIdx++;
-			}
-			curX += dirX[dir];
-			curY += dirY[dir];
-			
-			sec++;
+			map[x][y] = SNAKE;
+			snakeBody.add(new Point(x, y));
+
+			time++;
 		}
-		return sec;
+
+		return time;
+	}
+
+	private boolean collideWithBody(int x, int y, int[][] map){
+		return (map[x][y] == SNAKE);
+	}
+	private boolean isOutOfRange(int x, int y, int n){
+		return (x < 0 || y < 0 || x >= n || y >= n);
+	}
+
+	private int[][] setMap(int n, Point[] apples) {
+		int[][] map = new int[n][n];
+		for(Point apple : apples){
+			map[apple.x-1][apple.y-1] = APPLE;
+		}
+		return map;
 	}
 }
