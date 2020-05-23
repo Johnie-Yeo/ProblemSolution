@@ -95,8 +95,28 @@ public class BriansConcern{
         result = solution(sentence);
         test.test(result, expect).printResult();
 
-        sentence = "aHbEbLbLOaWORLD";
+        sentence = "aHbEbLbLbOaWORLD";
         expect = "HELLO WORLD";
+        result = solution(sentence);
+        test.test(result, expect).printResult();
+
+        sentence = "HELLOAaBWORLD";
+        expect = "HELLO AB WORLD";
+        result = solution(sentence);
+        test.test(result, expect).printResult();
+
+        sentence = "aHbIbHbIbHaIc";
+        expect = "invalid";
+        result = solution(sentence);
+        test.test(result, expect).printResult();
+
+        sentence = "aHbIbHbIbHaIcb";
+        expect = "invalid";
+        result = solution(sentence);
+        test.test(result, expect).printResult();
+
+        sentence = "aHAbLbOa";
+        expect = "invalid";
         result = solution(sentence);
         test.test(result, expect).printResult();
     }
@@ -115,8 +135,8 @@ public class BriansConcern{
             return INVALID;
         }
 
-        HashSet<String> check = new HashSet<>();
-        while(sentence != null){
+        HashSet<Character> check = new HashSet<>();
+        while(sentence != null && sentence.length() > 0){
             HashMap<String, String> parsed = parseWord(sentence, check);
             String word = parsed.get(PARSED_WORD);
             sentence = parsed.get(REMAINED);
@@ -147,19 +167,164 @@ public class BriansConcern{
         return m.find();
     }
 
-    private HashMap<String, String> parseWord(String sentence, HashSet<String> check) {
+    private HashMap<String, String> parseWord(String sentence, HashSet<Character> check) {
         HashMap<String, String> result = new HashMap<>();
 
         int index = getFirstLowerCaseIndex(sentence);
-        if(index < -1){
+        if(index < 0){
             result.put(PARSED_WORD, sentence);
             result.put(REMAINED, null);
-        }else if(index == 0){
-            // 1 & 2 가능, 2 가
         }else{
-            // 갯수, 위치에 따라 다름
+            if(check.contains(sentence.charAt(index))){
+                result.put(PARSED_WORD, null);
+                result.put(REMAINED, null);
+                return result;
+            }
+
+            if(index == 0){
+                // 1 & 2 가능, 2 가
+                int nextIndex = getNextIndex(sentence, index);
+                if(isLowerCase(sentence.charAt(index+1)) || nextIndex < 0){
+                    result.put(PARSED_WORD, null);
+                    result.put(REMAINED, null);
+                }else{
+                    check.add(sentence.charAt(0));
+                    if(nextIndex - index == 2){
+                        result.put(PARSED_WORD, ""+sentence.charAt(1));
+                        result.put(REMAINED, sentence.substring(3));
+                    }else{
+                        String head = sentence.substring(1, nextIndex);
+                        head = refineHeadAfter2ndRule(head, check);
+                        String tail = sentence.substring(nextIndex+1);
+                        result.put(PARSED_WORD, head);
+                        result.put(REMAINED, tail);
+                    }
+                }
+            }else{
+                // 갯수, 위치에 따라 다름
+                int nextIndex = getNextIndex(sentence, index);
+                if(index == 1){
+
+                    if(nextIndex < 0){
+                        check.add(sentence.charAt(1));
+                        try{
+                            if(isLowerCase(sentence.charAt(0)) || isLowerCase(sentence.charAt(2))){
+                                result.put(PARSED_WORD, null);
+                                result.put(REMAINED, null);
+                            }else{
+                                String parsed = "" + sentence.charAt(0) + sentence.charAt(2);
+                                String remained = sentence.substring(3);
+                                result.put(PARSED_WORD, parsed);
+                                result.put(REMAINED, remained);
+                            }
+                        }catch(StringIndexOutOfBoundsException e){
+                            result.put(PARSED_WORD, null);
+                            result.put(REMAINED, null);
+                        }
+                    }else{
+                        if(nextIndex - index == 2){
+                            check.add(sentence.charAt(1));
+                            refineWith1stRule(result, sentence);
+                        }else{
+                            result.put(PARSED_WORD, ""+sentence.charAt(0));
+                            result.put(REMAINED, sentence.substring(1));
+                        }
+                    }
+                }else{
+                    if(nextIndex < 0){
+                        String head = sentence.substring(0, index-1);
+                        String tail = sentence.substring(index-1);
+                        result.put(PARSED_WORD, head);
+                        result.put(REMAINED, tail);
+                    }else{
+                        String head = sentence.substring(0, index);
+                        String tail = sentence.substring(index);
+                        result.put(PARSED_WORD, head);
+                        result.put(REMAINED, tail);
+                    }
+                }
+            }
         }
+
         return result;
+    }
+
+    private void refineWith1stRule(HashMap<String, String> result, String sentence) {
+        char target = sentence.charAt(1);
+        int index = 0;
+        String parsed = "";
+        int length = sentence.length();
+        while(index < length){
+            char cur = sentence.charAt(index);
+            if(index % 2 == 0){
+                if(isLowerCase(cur)){
+                    result.put(PARSED_WORD, null);
+                    result.put(REMAINED, null);
+                    return;
+                }else{
+                    parsed += cur;
+                }
+            }else{
+                if(cur != target){
+                    String remained = sentence.substring(index);
+                    result.put(PARSED_WORD, parsed);
+                    result.put(REMAINED, remained);
+                    return;
+                }
+            }
+            index++;
+        }
+        if(length % 2 == 0){
+            result.put(PARSED_WORD, null);
+            result.put(REMAINED, null);
+        }else{
+            result.put(PARSED_WORD, parsed);
+            result.put(REMAINED, null);
+        }
+    }
+
+    private String refineHeadAfter2ndRule(String head, HashSet<Character> check) {
+        if(isLowerCase(head.charAt(1))){
+            char target = head.charAt(1);
+            int size = head.length();
+            if(check.contains(target) || size % 2 == 0){
+                return null;
+            }
+            check.add(target);
+            String result = "";
+            for(int i = 0; i < size; i++){
+                char cur = head.charAt(i);
+                if(i % 2 == 0){
+                    if(isLowerCase(cur)){
+                        return null;
+                    }else{
+                        result += cur;
+                    }
+                }else{
+                    if(cur != target){
+                        return null;
+                    }
+                }
+            }
+            return result;
+        }else{
+            if(containsSpecialCharacter(head)){
+                return null;
+            }else{
+                return head;
+            }
+        }
+    }
+
+    private int getNextIndex(String sentence, int index) {
+        char target = sentence.charAt(index);
+        int length = sentence.length();
+        while(++index < length){
+            if(sentence.charAt(index) == target){
+                return index;
+            }
+        }
+        return -1;
     }
 
     private int getFirstLowerCaseIndex(String str) {
