@@ -1,4 +1,5 @@
 src/SWTest
+src/SCPC
 .idea
 *.iml
 out/
