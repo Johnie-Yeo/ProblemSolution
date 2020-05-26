@@ -1,10 +1,9 @@
 package BOJ;
 
 
-import Test.Test;
+import Test.*;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class RotateArray4 {
 	public static void main(String[] args) {
@@ -15,7 +14,25 @@ public class RotateArray4 {
 	private void test() {
 		Test test = new Test();
 
+		int N, M, K;
+		String input;
+		int[][] A;
+		String[] rotate;
+		int result, expect;
 
+		N = 5; M = 6; K = 2;
+		input = "1 2 3 2 5 6\n" +
+				"3 8 7 2 1 3\n" +
+				"8 2 3 1 4 5\n" +
+				"3 4 5 1 1 1\n" +
+				"9 3 2 1 4 3";
+		A = InputParser.parseStringTo2DIntArray(input);
+		input = "3 4 2\n" +
+				"4 2 1";
+		rotate = input.split("\n");
+		result = getMaxArrayValue(N, M, K, A, rotate);
+		expect = 12;
+		test.test(result, expect).printResult();
 	}
 
 	public void solve() {
@@ -62,17 +79,17 @@ public class RotateArray4 {
 			int value = getValue(map);
 			return value;
 		}
-		int max = 0;
+		int min = Integer.MAX_VALUE;
 		for(int i = 0; i < k; i++){
 			if(!check[i]){
 				check[i] = true;
 				int[][] rotated = rotate(n, m, map, rotateInfo[i]);
 				int cur = dfs(n, m, k, rotated, rotateInfo, check, index+1);
-				max = Math.max(cur, max);
+				min = Math.min(cur, min);
 				check[i] = false;
 			}
 		}
-		return max;
+		return min;
 	}
 
 	private int[][] rotate(int n, int m, int[][] map, Rotate rotate){
@@ -96,14 +113,21 @@ public class RotateArray4 {
 		int y = c - dist - 1;
 		int[] dirX = {0, 1, 0, -1};
 		int[] dirY = {1, 0, -1, 0};
+		int prev = map[x][y];
 
 		for(int d = 0; d < 4; d++){
-			int tmp = 0;
 			x += dirX[d];
 			y += dirY[d];
 			while(!isCorner(x, y, r, c, dist)){
-
+				int tmp = prev;
+				prev = map[x][y];
+				map[x][y] = tmp;
+				x += dirX[d];
+				y += dirY[d];
 			}
+			int tmp = prev;
+			prev = map[x][y];
+			map[x][y] = tmp;
 		}
 		return map;
 	}
