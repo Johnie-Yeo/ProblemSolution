@@ -1,68 +1,70 @@
 package BOJ;
 
+import Test.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RollingDice {
-	public final int []dirX = {0,0,-1,1};
-	public final int []dirY = {1,-1,0,0};
-	public final int EAST = 0;
-	public final int WEST = 1;
-	public final int NORTH = 2;
-	public final int SOUTH = 3;
-	
-	public class Dice{
-		int up, down, left, right, front, back;
-		public Dice() {
-			this.up = 0;
-			this.down = 0;
-			this.left = 0;
-			this.right = 0;
-			this.front = 0;
-			this.back = 0;
-		}
-		public void roll(int dir) {
-			if(dir == EAST) {
-				this.rollEast();
-			}else if(dir == WEST) {
-				this.rollWest();
-			}else if(dir == SOUTH) {
-				this.rollSouth();
-			}else if(dir == NORTH) {
-				this.rollNorth();
-			}
-		}
-		public void rollNorth() {
-			int tmp = front;
-			front = down;
-			down = back;
-			back = up;
-			up = tmp;
-		}
-		public void rollSouth() {
-			int tmp = front;
-			front = up;
-			up = back;
-			back = down;
-			down = tmp;
-		}
-		public void rollEast() {
-			int tmp = left;
-			left = down;
-			down = right;
-			right = up;
-			up = tmp;
-		}
-		public void rollWest() {
-			int tmp = left;
-			left = up;
-			up = right;
-			right = down;
-			down = tmp;
-		}
-	}
 	public static void main(String[] args) {
-		new RollingDice().solve();
+//		new Main().solve();
+		new RollingDice().test();
 	}
+
+	private void test() {
+		Test test = new Test();
+
+		int N, M, x, y, numberOfOrders;
+		String input;
+		int[][] map;
+		int[] orders;
+		int[] result, expect;
+
+		N = 4; M = 2; x = 0; y = 0; numberOfOrders = 8;
+		input = "0 2\n" +
+				"3 4\n" +
+				"5 6\n" +
+				"7 8";
+		map = InputParser.parseStringTo2DIntArray(input);
+		input = "4 4 4 1 3 3 3 2";
+		orders = InputParser.parseStringToIntArray(input);
+		result = getTopOfDiceNumbers(N, M, x, y, numberOfOrders, map, orders);
+		expect = InputParser.parseStringToIntArray("0 0 3 0 0 8 6 3");
+		test.test(result, expect).printResult();
+
+		N = 3; M = 3; x = 1; y = 1; numberOfOrders = 9;
+		input = "1 2 3\n" +
+				"4 0 5\n" +
+				"6 7 8";
+		map = InputParser.parseStringTo2DIntArray(input);
+		input = "1 3 2 2 4 4 1 1 3";
+		orders = InputParser.parseStringToIntArray(input);
+		result = getTopOfDiceNumbers(N, M, x, y, numberOfOrders, map, orders);
+		expect = InputParser.parseStringToIntArray("0 0 0 3 0 1 0 6 0");
+		test.test(result, expect).printResult();
+
+		N = 2; M = 2; x = 0; y = 0; numberOfOrders = 16;
+		input = "0 2\n" +
+				"3 4";
+		map = InputParser.parseStringTo2DIntArray(input);
+		input = "4 4 4 4 1 1 1 1 3 3 3 3 2 2 2 2";
+		orders = InputParser.parseStringToIntArray(input);
+		result = getTopOfDiceNumbers(N, M, x, y, numberOfOrders, map, orders);
+		expect = InputParser.parseStringToIntArray("0 0 0 0");
+		test.test(result, expect).printResult();
+
+		N = 3; M = 3; x = 0; y = 0; numberOfOrders = 16;
+		input = "0 1 2\n" +
+				"3 4 5\n" +
+				"6 7 8";
+		map = InputParser.parseStringTo2DIntArray(input);
+		input = "4 4 1 1 3 3 2 2 4 4 1 1 3 3 2 2";
+		orders = InputParser.parseStringToIntArray(input);
+		result = getTopOfDiceNumbers(N, M, x, y, numberOfOrders, map, orders);
+		expect = InputParser.parseStringToIntArray("0 0 0 6 0 8 0 2 0 8 0 2 0 8 0 2");
+		test.test(result, expect).printResult();
+	}
+
 	public void solve() {
 		Scanner kb = new Scanner(System.in);
 		int N = kb.nextInt();
@@ -81,30 +83,103 @@ public class RollingDice {
 			order[n] = kb.nextInt();
 		}
 		kb.close();
-		
-		play(N, M, map, x, y, num, order);
-	}
-	private void play(int N, int M, int[][] map, int x, int y, int num, int[] order) {
-		Dice dice = new Dice();
-		for(int i = 0; i < num; i++) {
-			int dir = order[i]-1;
-			int tmpX = x + dirX[dir];
-			int tmpY = y + dirY[dir];
-			
-			if(tmpX < 0 || tmpY < 0 || tmpX >= N || tmpY >= M) {
-				continue;
-			}
-			
-			x = tmpX;
-			y = tmpY;
-			dice.roll(dir);
-			if(map[x][y] == 0) {//�̵��� ĭ�� �����ִ� ���� 0�̸�
-				map[x][y] = dice.down;//�ֻ��� �ٴڸ��� ����
-			}else {
-				dice.down = map[x][y];
-				map[x][y] = 0;
-			}
-			System.out.println(dice.up);
+
+		int[] result = getTopOfDiceNumbers(N, M, x, y, num, map, order);
+		for(int elem : result){
+			System.out.println(elem);
 		}
 	}
+
+	private class Dice{
+		int top, bottom, front, back, left, right;
+		public Dice(){
+			this.top = 0;
+			this.bottom = 0;
+			this.front = 0;
+			this.back = 0;
+			this.left = 0;
+			this.right = 0;
+		}
+		public void roll(int dir){
+			switch (dir){
+				case NORTH:
+					this.rollNorth();
+					break;
+				case SOUTH:
+					this.rollSouth();
+					break;
+				case EAST:
+					this.rollEast();
+					break;
+				case WEST:
+					this.rollWest();
+					break;
+			}
+		}
+		private void rollNorth(){
+			int tmp = this.top;
+			this.top = this.front;
+			this.front = this.bottom;
+			this.bottom = this.back;
+			this.back = tmp;
+		}
+		private void rollSouth(){
+			int tmp = this.top;
+			this.top = this.back;
+			this.back = this.bottom;
+			this.bottom = this.front;
+			this.front = tmp;
+		}
+		private void rollEast(){
+			int tmp = this.top;
+			this.top = this.left;
+			this.left = this.bottom;
+			this.bottom = this.right;
+			this.right = tmp;
+		}
+		private void rollWest(){
+			int tmp = this.top;
+			this.top = this.right;
+			this.right = this.bottom;
+			this.bottom = this.left;
+			this.left = tmp;
+		}
+	}
+	private final int EAST = 1;
+	private final int WEST = 2;
+	private final int NORTH = 3;
+	private final int SOUTH = 4;
+	private final int[] dirX = {0, 0, -1, 1};
+	private final int[] dirY = {1, -1, 0, 0};
+	private int[] getTopOfDiceNumbers(int n, int m, int x, int y, int numberOfOrders, int[][] map, int[] orders) {
+		ArrayList<Integer> result = new ArrayList<>();
+		Dice dice = new Dice();
+
+		for(int order : orders){
+			int dir = order - 1;
+			int newX = x + dirX[dir];
+			int newY = y + dirY[dir];
+			if(isOutOfRange(newX, newY, n, m)){
+				continue;
+			}else{
+				x = newX;
+				y = newY;
+			}
+			dice.roll(order);
+			if(map[x][y] == 0){
+				map[x][y] = dice.bottom;
+			}else{
+				dice.bottom = map[x][y];
+				map[x][y] = 0;
+			}
+			result.add(dice.top);
+		}
+
+		return result.stream().mapToInt(e -> e).toArray();
+	}
+
+	private boolean isOutOfRange(int x, int y, int n, int m) {
+		return (x < 0 || y < 0 || x >= n || y >= m);
+	}
+
 }	

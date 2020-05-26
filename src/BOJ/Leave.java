@@ -1,47 +1,87 @@
 package BOJ;
 
+import Test.Test;
+
 import java.util.Scanner;
 
 public class Leave {
-	//���� 14501
-	//�� ��¥�� ���ؼ� ���� ���� ���ϰ�
-	//�ִ� ã��
-	//���������� ���� ���ϴ�
-	int MAX = 0;
-	int N;
-	int []T;
-	int []P;
-	
 	public static void main(String[] args) {
-		Leave app = new Leave();
-		app.solve();
+//		new Main().solve();
+		new Leave().test();
+	}
+
+	private void test() {
+		Test test = new Test();
+
+		int N;
+		int[] T, P;
+		int result, expect;
+
+		N = 7;
+		T = new int[]{3, 5, 1, 1, 2, 4, 2};
+		P = new int[]{10, 20, 10, 20, 15, 40, 200};
+		result = getMaxWage(N, T, P);
+		expect = 45;
+		test.test(result, expect).printResult();
+
+		N = 10;
+		T = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		P = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		result = getMaxWage(N, T, P);
+		expect = 55;
+		test.test(result, expect).printResult();
+
+		N = 10;
+		T = new int[]{5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
+		P = new int[]{10, 9, 8, 7, 6, 10, 9, 8, 7, 6};
+		result = getMaxWage(N, T, P);
+		expect = 20;
+		test.test(result, expect).printResult();
+
+		N = 10;
+		T = new int[]{5, 4, 3, 2, 1, 1, 2, 3, 4, 5};
+		P = new int[]{50, 40, 30, 20, 10, 10, 20, 30, 40, 50};
+		result = getMaxWage(N, T, P);
+		expect = 90;
+		test.test(result, expect).printResult();
 	}
 
 	private void solve() {
 		Scanner kb = new Scanner(System.in);
-		N = kb.nextInt();
-		T = new int[N];
-		P = new int[N];
+		int N = kb.nextInt();
+		int[] T = new int[N];
+		int[] P = new int[N];
 		for(int i = 0; i < N; i++) {
 			T[i] = kb.nextInt();
 			P[i] = kb.nextInt();
 		}
 		kb.close();
-		if(T[0] <= N)
-			getMaxWage(0, true, P[0], T[0]);
-		getMaxWage(0, false, 0, 0);
-		System.out.println(MAX);
+
+		int result = getMaxWage(N, T, P);
+		System.out.println(result);
 	}
 
-	private void getMaxWage(int idx, boolean work, int wage, int amount) {
-		if(idx == N) {
-			if(MAX < wage)
-				MAX = wage;
-			return;
-		}
-		
-		if(amount <= 0 && T[idx] <= N-idx)
-			getMaxWage(idx+1, true, wage+P[idx], T[idx]-1);
-		getMaxWage(idx+1, false, wage, amount-1);
+	private int getMaxWage(int n, int[] t, int[] p) {
+		int index = 0;
+		int wage = 0;
+		int max = dfs(n, t, p, index, wage);
+		return max;
 	}
+
+	private int dfs(int n, int[] t, int[] p, int index, int wage) {
+		int max = 0;
+
+		if(index >= n){
+			return wage;
+		}
+
+		if(index + t[index] <= n){
+			int tmp1 = dfs(n, t, p, index + t[index], wage + p[index]);
+			max = Math.max(max, tmp1);
+		}
+		int tmp2 = dfs(n, t, p, index+1, wage);
+		max = Math.max(max, tmp2);
+		return max;
+	}
+
 }
