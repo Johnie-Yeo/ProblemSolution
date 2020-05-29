@@ -1,358 +1,336 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class LadderManufacturing{
-    private class Point {
-        int x, y;
-        public Point(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-        public Point next(int col, int row){
-            if(this == null){
-                return null;
-            }
-            Point next = new Point(this.x, this.y+1);
-
-            if(next.y > col - 2){
-                next.x++;
-                next.y = -1;
-                return next.next(col, row);
-            }else if(next.x >= row){
-                return null;
-            }
-            return next;
-        }
-    }
     public static void main(String[] args) {
-//        new LadderManufacturing().solve();
+//        new Main().solve();
         new LadderManufacturing().test();
     }
-    public void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
-        int N, M, H;
-        int[][] map;
-        int result, expect;
-        int[][] points;
 
-        N = 2; M = 0; H = 3;
-        map = new int[H][N];
-        result = getMinimumExtraHorizon(N, H, map);
+    private void test() {
+        Test test = new Test();
+
+        String input;
+        int expect;
+
+        input = "2 0 3";
         expect = 0;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 4; M = 6; H = 7;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {3, 3},
-                {4, 2},
-                {5, 3},
-                {7, 1},
-                {7, 3}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
-        expect = 2;
-        test.test(result, expect).printResult();
-
-        N = 2; M = 1; H = 3;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "2 1 3\n" +
+                "1 1";
         expect = 1;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 5; M = 5; H = 6;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {3, 2},
-                {2, 3},
-                {5, 1},
-                {5, 4}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "5 5 6\n" +
+                "1 1\n" +
+                "3 2\n" +
+                "2 3\n" +
+                "5 1\n" +
+                "5 4";
         expect = 3;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 6; M = 5; H = 6;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {3, 2},
-                {1, 3},
-                {2, 5},
-                {5, 5}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "6 5 6\n" +
+                "1 1\n" +
+                "3 2\n" +
+                "1 3\n" +
+                "2 5\n" +
+                "5 5";
         expect = 3;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 5; M = 8; H = 6;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {2, 2},
-                {3, 3},
-                {4, 4},
-                {3, 1},
-                {4, 2},
-                {5, 3},
-                {6, 4}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "5 8 6\n" +
+                "1 1\n" +
+                "2 2\n" +
+                "3 3\n" +
+                "4 4\n" +
+                "3 1\n" +
+                "4 2\n" +
+                "5 3\n" +
+                "6 4";
         expect = -1;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 5; M = 12; H = 6;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {1, 3},
-                {2, 2},
-                {2, 4},
-                {3, 1},
-                {3, 3},
-                {4, 2},
-                {4, 4},
-                {5, 1},
-                {5, 3},
-                {6, 2},
-                {6, 4}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "5 12 6\n" +
+                "1 1\n" +
+                "1 3\n" +
+                "2 2\n" +
+                "2 4\n" +
+                "3 1\n" +
+                "3 3\n" +
+                "4 2\n" +
+                "4 4\n" +
+                "5 1\n" +
+                "5 3\n" +
+                "6 2\n" +
+                "6 4";
         expect = -1;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 5; M = 6; H = 6;
-        map = new int[H][N];
-        points = new int[][]{
-                {1, 1},
-                {3, 1},
-                {5, 2},
-                {4, 3},
-                {2, 3},
-                {1, 4}
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+        input = "5 6 6\n" +
+                "1 1\n" +
+                "3 1\n" +
+                "5 2\n" +
+                "4 3\n" +
+                "2 3\n" +
+                "1 4";
         expect = 2;
-        test.test(result, expect).printResult();
+        testCase(test, input, expect);
 
-        N = 4; M = 2; H = 2;
-        map = new int[H][N];
-        points = new int[][]{
-                {2, 1},
-                {2, 3},
-        };
-        for(int []point : points){
-            int x = point[0]-1;
-            int y = point[1]-1;
-            map[x][y] = 1;
-        }
-        result = getMinimumExtraHorizon(N, H, map);
+//        input = "10 10 30\n" +
+//                "1 1\n" +
+//                "3 1\n" +
+//                "5 2\n" +
+//                "4 3\n" +
+//                "2 3\n" +
+//                "1 4\n" +
+//                "7 2\n" +
+//                "8 7\n" +
+//                "6 6\n" +
+//                "3 8\n";
+//        expect = -1;
+//        testCase(test, input, expect);
+
+        input = "4 3 4 \n" +
+                "1 1\n" +
+                "2 2\n" +
+                "1 3";
+        expect = 3;
+        testCase(test, input, expect);
+
+//        input = "10 5 30\n" +
+//                "30 9\n" +
+//                "3 2\n" +
+//                "2 3\n" +
+//                "5 1\n" +
+//                "5 4";
+//        expect = -1;
+//        testCase(test, input, expect);
+
+        input = "4 3 4\n" +
+                "1 1\n" +
+                "2 2\n" +
+                "1 3";
+        expect = 3;
+        testCase(test, input, expect);
+
+        input = "4 6 7\n" +
+                "1 1\n" +
+                "3 3\n" +
+                "4 2\n" +
+                "5 3\n" +
+                "7 1\n" +
+                "7 3";
         expect = 2;
+        testCase(test, input, expect);
+
+        input = "4 1 4\n" +
+                "3 2";
+        expect = 1;
+        testCase(test, input, expect);
+
+        input = "4 7 5\n" +
+                "1 1\n" +
+                "2 2\n" +
+                "1 3\n" +
+                "3 2\n" +
+                "4 1\n" +
+                "5 1\n" +
+                "4 3";
+        expect = -1;
+        testCase(test, input, expect);
+
+        input = "4 3 4\n" +
+                "1 1\n" +
+                "2 2\n" +
+                "3 3";
+        expect = -1;
+        testCase(test, input, expect);
+
+        input = "2 0 2";
+        expect = 0;
+        testCase(test, input, expect);
+
+        input = "4 1 4\n" +
+                "3 2";
+        expect = 1;
+        testCase(test, input, expect);
+    }
+
+    private void testCase(Test test, String input, int expect) {
+        String[] parsed = input.split("\n", 2);
+        int N = Integer.parseInt(parsed[0].split(" ")[0]);
+        int M = Integer.parseInt(parsed[0].split(" ")[1]);
+        int H = Integer.parseInt(parsed[0].split(" ")[2]);
+        int[][] horizontalInfo;
+        if(parsed.length > 1){
+            String body = parsed[1];
+            horizontalInfo = InputParser.parseStringTo2DIntArray(body);
+        }else{
+            horizontalInfo = new int[0][2];
+        }
+        int result = getMinAdditionalHorizontalLineToManufacture(N, M, H, horizontalInfo);
         test.test(result, expect).printResult();
     }
-    public void solve(){
+
+    private void solve() {
         Scanner kb = new Scanner(System.in);
 
         int N = kb.nextInt();
         int M = kb.nextInt();
         int H = kb.nextInt();
-
-        int[][] map = new int[H][N];
+        int[][] horizontalInfo = new int[M][2];
         for(int i = 0; i < M; i++){
-            int a = kb.nextInt();
-            int b = kb.nextInt();
-            map[a-1][b-1] = 1;
+            for(int j = 0; j < 2; j++){
+                horizontalInfo[i][j] = kb.nextInt();
+            }
         }
-        int result = getMinimumExtraHorizon(N, H, map);
+        kb.close();
+        int result = getMinAdditionalHorizontalLineToManufacture(N, M, H, horizontalInfo);
         System.out.println(result);
     }
 
-    private int getMinimumExtraHorizon(int col, int row, int[][] map) {
-        if(isFeasible(col, row, map)){
-            return 0;
+    private class Point{
+        int x, y;
+        public Point(int x, int y){
+            this.x = x;
+            this.y = y;
         }
-        for(int i = 1; i <= 3; i++){
-            Point[] ladders = initLadders(i, map, col, row);
-            if(ladders[i-1] == null){
-                return -1;
-            }
-            if(dfs(ladders, i, col, row, map)){
+
+        public Point getLeft(){
+            return new Point(this.x, this.y-1);
+        }
+
+        public Point getRight(){
+            return new Point(this.x, this.y+1);
+        }
+
+        public void goRight(){
+            this.y++;
+        }
+
+        public void goLeft(){
+            this.y--;
+        }
+
+        public void goDown(){
+            this.x++;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[]{this.x, this.y});
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            Point o = (Point) obj;
+            return (this.x == o.x && this.y == o.y);
+        }
+    }
+    private int getMinAdditionalHorizontalLineToManufacture(int col, int m, int row, int[][] horizontalInfo) {
+        HashSet<Point> horizontals = getHorizontalSet(horizontalInfo);
+        ArrayList<Point> availableSpots  = getAvailableSpot(horizontals, row, col);
+
+        int availableSpotsSize = availableSpots.size();
+        int limit = Math.min(availableSpotsSize, 3);
+        for(int i = 0; i <= limit; i++){
+            if(isFeasible(horizontals, availableSpots, row, col, i)){
                 return i;
             }
         }
         return -1;
     }
 
-    private Point[] initLadders(int number, int[][] map, int col, int row){
-        Point[] ladders = new Point[number];
-        for(int i = 0; i < number; i++){
-            ladders[i] = getFirstLadderPoint(map, col, row);
-        }
-        return ladders;
+    private boolean isFeasible(HashSet<Point> cur, ArrayList<Point> potential, int row, int col, int count) {
+        int add = 0;
+        boolean result = dfs(cur, potential, row, col, count, add);
+        return result;
     }
 
-    private boolean dfs(Point[] ladders, int number, int col, int row, int[][] map) {
-        if(ladders == null || ladders[0] == null){
-            return false;
+    private boolean dfs(HashSet<Point> cur, ArrayList<Point> potential, int row, int col, int limit, int add) {
+        if(add >= limit){
+            if(isManufactured(cur, row, col)){
+                return true;
+            }else{
+                return false;
+            }
         }
-        if(isFeasible(col, row, map)){
-            return true;
-        }else{
-            ladders = nextComb(ladders, number, col, row, map);
-            return dfs(ladders, number, col, row, map);
-        }
-    }
-
-    private Point[] nextComb(Point[] ladders, int number, int col, int row, int[][] map){
-        int index = number-1;
-        ladders[index] = getNextLadderPoint(map, col, row, ladders[index]);
-
-        while(index > 0 && ladders[index] == null){
-            index--;
-            ladders[index] = getNextLadderPoint(map, col, row, ladders[index]);
-            for(int i = index+1; i < number; i++){
-                ladders[i] = getNextLadderFromPrev(map, col, row, ladders[i-1]);
-                if(ladders[i] == null){
-                    for(int j = index; j < i; j++){
-                        int x = ladders[j].x;
-                        int y = ladders[j].y;
-                        map[x][y] = 0;
-                    }
-                    ladders[index] = null;
-                    break;
+        ArrayList<Point> clone = new ArrayList<>(potential);
+        for(Point point : potential){
+            clone.remove(0);
+            if(isPuttable(cur, point)){
+                cur.add(point);
+                boolean tmp = dfs(cur, clone, row, col, limit, add+1);
+                if(tmp){
+                    return true;
                 }
+                cur.remove(point);
             }
         }
-        return ladders;
+        return false;
     }
 
-    private Point getNextLadderFromPrev(int[][] map, int col, int row, Point cur){
-        Point next = cur.next(col, row);
-        if(next == null){
-            return null;
-        }
-
-        while(!isSettable(next, map, col)){
-            next = next.next(col, row);
-            if(next == null){
-                return null;
-            }
-        }
-        map[next.x][next.y] = 1;
-        return next;
-    }
-
-    private Point getNextLadderPoint(int[][] map, int col, int row, Point cur){
-        int x = cur.x;
-        int y = cur.y;
-        map[x][y] = 0;
-        Point next = cur.next(col, row);
-        if(next == null){
-            return null;
-        }
-
-        while(!isSettable(next, map, col)){
-            next = next.next(col, row);
-            if(next == null){
-                return null;
-            }
-        }
-        map[next.x][next.y] = 1;
-        return next;
-    }
-
-    private Point getFirstLadderPoint(int[][] map, int col, int row){
-        Point cur = new Point(0, 0);
-        while(!isSettable(cur, map, col)){
-            cur = cur.next(col, row);
-            if(cur == null){
-                return null;
-            }
-        }
-        map[cur.x][cur.y] = 1;
-        return cur;
-    }
-
-    private boolean isSettable(Point cur, int[][] map, int col){
-        int x = cur.x;
-        int y = cur.y;
-        if(
-                (map[x][y] == 1) ||
-                (y < col-2 && map[x][y+1] == 1) ||
-                (y > 0 && map[x][y-1] == 1)
-        ){
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isFeasible(int col, int row, int[][] map) {
+    private boolean isManufactured(HashSet<Point> cur, int row, int col) {
         for(int i = 0; i < col; i++){
-            int destination = getDestination(i, col, row, map);
-            if(i != destination){
+            int end = getEnd(cur, i, row);
+            if(end != i){
                 return false;
             }
         }
         return true;
     }
 
-    private int getDestination(int start, int col, int row, int[][] map) {
-        int x = 0;
-        int y = start;
-        while(x < row){
-            if(map[x][y] == 1){
-                y++;
-                x++;
-            }else if(y > 0 && map[x][y-1] == 1){
-                y--;
-                x++;
-            }else{
-                x++;
+    private int getEnd(HashSet<Point> cur, int index, int row) {
+        Point point = new Point(0, index);
+        while(point.x < row){
+            if(cur.contains(point)){
+                point.goRight();
+            }else if(cur.contains(point.getLeft())){
+                point.goLeft();
+            }
+            point.goDown();
+        }
+        return point.y;
+    }
+
+    private ArrayList<Point> getAvailableSpot(HashSet<Point> set, int n, int m) {
+        ArrayList<Point> result = new ArrayList<>();
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m-1; j++){
+                Point p = new Point(i, j);
+                if(isPuttable(set, p)){
+                    result.add(p);
+                }
             }
         }
-        return y;
+
+        return result;
     }
+
+    private boolean isPuttable(HashSet<Point> set, Point p) {
+        return !(set.contains(p) || set.contains(p.getRight()) || set.contains(p.getLeft()));
+    }
+
+
+    private HashSet<Point> getHorizontalSet(int[][] horizontalInfo) {
+        HashSet<Point> set = new HashSet<>();
+
+        for(int[] row : horizontalInfo){
+            int x = row[0] - 1;
+            int y = row[1] - 1;
+            Point p = new Point(x, y);
+            set.add(p);
+        }
+        return set;
+    }
+
 }
