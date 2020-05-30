@@ -1,95 +1,183 @@
 package BOJ;
 
+import Test.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class DragonCurve {
-	public class Point{
-		public int x, y;
-		public Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		public Point addPoint(Point p) {
-			return new Point(x + p.x, y + p.y);
-		}
+	public static void main(String[] args) {
+//		new Main().solve();
+		new DragonCurve().test();
 	}
-	Point dir[] = {new Point(1,0), new Point(0,-1), new Point(-1,0), new Point(0,1)}; 
-	ArrayList<Integer> direction = new ArrayList<>(); 
-	public class Dragon{
-		public Point location;
-		int generation;
-		public Dragon(Point p, int g) {
-			location = p;
-			generation = g;
-		}
+
+	private void test() {
+		Test test = new Test();
+
+		String input;
+		int expect;
+
+		input = "3\n" +
+				"3 3 0 1\n" +
+				"4 2 1 3\n" +
+				"4 2 2 1";
+		expect = 4;
+		testCase(test, input, expect);
+
+		input  = "4\n" +
+				"3 3 0 1\n" +
+				"4 2 1 3\n" +
+				"4 2 2 1\n" +
+				"2 7 3 4";
+		expect = 11;
+		testCase(test, input, expect);
+
+		input  = "10\n" +
+				"5 5 0 0\n" +
+				"5 6 0 0\n" +
+				"5 7 0 0\n" +
+				"5 8 0 0\n" +
+				"5 9 0 0\n" +
+				"6 5 0 0\n" +
+				"6 6 0 0\n" +
+				"6 7 0 0\n" +
+				"6 8 0 0\n" +
+				"6 9 0 0";
+		expect = 8;
+		testCase(test, input, expect);
+
+		input  = "4\n" +
+				"50 50 0 10\n" +
+				"50 50 1 10\n" +
+				"50 50 2 10\n" +
+				"50 50 3 10";
+		expect = 1992;
+		testCase(test, input, expect);
+
+		input = "1\n" +
+				"3 3 0 3";
+		expect = 3;
+		testCase(test, input, expect);
 	}
-	public void countDragon() {
-		int [][]maze = new int[101][101];
+
+	private void testCase(Test test, String input, int expect) {
+		String[] parsed = input.split("\n", 2);
+		int N = Integer.parseInt(parsed[0]);
+		int[][] curveInfo = InputParser.parseStringTo2DIntArray(parsed[1]);
+		int result = getAllPointMarkedSquare(N, curveInfo);
+		test.test(result, expect).printResult();
+	}
+
+	private void solve() {
 		Scanner kb = new Scanner(System.in);
-		int numDragon = kb.nextInt();
-		for(int i = 0; i < numDragon; i++) {
-			ArrayList<Dragon> arr = new ArrayList<>();
-			ArrayList<Integer> direction = new ArrayList<>(); 
-			int x = kb.nextInt();
-			int y = kb.nextInt();
-			int d = kb.nextInt();
-			int g = kb.nextInt();
-			Point p = new Point(x, y);
-			maze[x][y] = 1;
-			arr.add(new Dragon(p, 0));
-			direction.add(d);
-			Point nextP = p.addPoint(dir[d]);
-			arr.add(new Dragon(nextP, 0));
-			maze[nextP.x][nextP.y] = 1;
-			buildDragonCurve(arr, g, maze, direction);
+
+		int N = kb.nextInt();
+		int[][] curveInfo = new int[N][4];
+		for(int i = 0; i < N; i++){
+			for(int j = 0; j < 4; j++){
+				curveInfo[i][j] = kb.nextInt();
+			}
 		}
 		kb.close();
+		int result = getAllPointMarkedSquare(N, curveInfo);
+		System.out.println(result);
+	}
+
+	private class Point{
+		int x, y, dir;
+		public Point(int x, int y, int dir){
+			this.x = x;
+			this.y = y;
+			this.dir = dir;
+		}
+	}
+
+	private final int[] dirX = {0, -1, 0, 1};
+	private final int[] dirY = {1, 0, -1, 0};
+	
+	private int getAllPointMarkedSquare(int n, int[][] curveInfo) {
+		int[][] map = new int[101][101];
+
+		for(int[] curve : curveInfo){
+			markCurve(map, curve);
+		}
+		int result = getMarkedSquare(map);
+		return result;
+	}
+
+	private void markCurve(int[][] map, int[] curve) {
+		int y = curve[0];
+		int x = curve[1];
+		int dir = curve[2];
+		int generation = curve[3];
+		
+		Point start = new Point(x, y, dir);
+		Stack<Point> stack = getDragonStack(start, generation);
+		
+		markDragonOnMap(stack, map);
+	}
+
+	private void markDragonOnMap(Stack<Point> stack, int[][] map) {
+		markLastPoint(stack.peek(), map);
+		for(Point p : stack){
+			int x = p.x;
+			int y = p.y;
+			map[x][y] = 1;
+		}
+	}
+
+	private void markLastPoint(Point point, int[][] map) {
+		int dir = point.dir;
+		int x = point.x + dirX[dir];
+		int y = point.y + dirY[dir];
+		map[x][y] = 1;
+	}
+
+	private Stack<Point> getDragonStack(Point start, int generation) {
+		Stack<Point> stack = new Stack<>();
+		stack.add(start);
+
+		int x = start.x;
+		int y = start.y;
+		int dir = start.dir;
+
+		for(int i = 1; i <= generation; i++){
+			Stack<Point> clone = clone(stack);
+
+			while(!clone.isEmpty()){
+				Point cur = clone.pop();
+				x += dirX[dir];
+				y += dirY[dir];
+				dir = (cur.dir + 1) % 4;
+				Point next = new Point(x, y, dir);
+				stack.add(next);
+			}
+		}
+
+		return stack;
+	}
+
+	private Stack<Point> clone(Stack<Point> stack) {
+		Stack<Point> clone = new Stack<>();
+		clone.addAll(stack);
+		return clone;
+	}
+
+
+	private int getMarkedSquare(int[][] map) {
 		int count = 0;
-		for(int i = 0; i < 100; i++) {
-			for(int j = 0; j < 100; j++) {
-				if(maze[i][j] == 1) {
-					if(isSquare(maze, i, j))
-						count++;
+		for(int i = 0; i < 100; i++){
+			for(int j = 0; j < 100; j++){
+				if(isMarked(map, i, j)){
+					count++;
 				}
 			}
 		}
-		System.out.println(count);
-		drawMaze(maze);
-	}
-	private void drawMaze(int[][] maze) {
-		for(int i = 0; i < 10; i++) {
-			for(int j = 0 ; j < 10 ; j++) {
-				System.out.print(maze[j][i] + " ");
-			}
-			System.out.println();
-	}
-		
-	}
-	private boolean isSquare(int[][] maze, int i, int j) {
-		if(i == 0 || j ==0)
-			return false;
-		if(maze[i-1][j] == 1 && maze[i][j-1] == 1 && maze[i-1][j-1] == 1)
-			return true;
-		return false;
-	}
-	
-	private void buildDragonCurve(ArrayList<Dragon> arr, int gen, int[][] maze, ArrayList<Integer> direct) {
-		for(int i = 1; i <=gen; i++) {
-			for(int j = arr.size()-1; j > 0; j--) {
-				Dragon prev = arr.get(arr.size()-1);
-				int nextD = (direct.get(direct.size() + (j - arr.size())) + 1) % 4;
-				Point pt = prev.location.addPoint(dir[nextD]);
-				direct.add(nextD);
-				int g = i;
-				arr.add(new Dragon(pt, g));
-				maze[pt.x][pt.y] = 1;
-			}
-		}
-	}
-	public static void main(String[] args) {
-		DragonCurve app = new DragonCurve();
-		app.countDragon();
+		return count;
 	}
 
+	private boolean isMarked(int[][] map, int i, int j) {
+		return (map[i][j] == 1 && map[i][j+1] == 1 && map[i+1][j] == 1&& map[i+1][j+1] == 1);
+	}
 }
