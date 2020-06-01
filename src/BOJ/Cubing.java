@@ -1,219 +1,367 @@
 package BOJ;
 
+import Test.Test;
+
 import java.util.Scanner;
 public class Cubing {
-	final int U = 0;
-	final int D = 1;
-	final int F = 2;
-	final int B = 3;
-	final int L = 4;
-	final int R = 5;
-	
 	public static void main(String[] args) {
-		Cubing app = new Cubing();
-		app.getInput();
+//		new Main().solve();
+		new Cubing().test();
 	}
 
-	private void getInput() {
-		StringBuilder sb = new StringBuilder();
+	private void test() {
+		Test test = new Test();
+
+		String input, expect;
+
+		input = "1\n" +
+				"L-";
+		expect = "rww\n" +
+				 "rww\n" +
+				 "rww";
+		testCase(test, input, expect);
+
+		input = "2\n" +
+				"F+ B+";
+		expect = "bbb\n" +
+				 "www\n" +
+				 "ggg";
+		testCase(test, input, expect);
+
+		input = "4\n" +
+				"U- D- L+ R+";
+		expect = "gwg\n" +
+				"owr\n" +
+				"bwb";
+		testCase(test, input, expect);
+
+		input = "10\n" +
+				"L- U- L+ U- L- U- U- L+ U+ U+";
+		expect = "gwo\n" +
+				"www\n" +
+				"rww";
+		testCase(test, input, expect);
+	}
+
+	private void testCase(Test test, String input, String expect) {
+		String[] parsed = input.split("\n");
+		int N = Integer.parseInt(parsed[0]);
+		String[] moves = parsed[1].split(" ");
+		String result = getTopAfterMove(N, moves);
+		test.test(result, expect).printResult();
+	}
+
+	private void solve() {
 		Scanner kb = new Scanner(System.in);
-		int testCase = kb.nextInt();
-		int n;
-		char [][]cube = new char[6][9];
-		for(int i = 0; i < testCase; i++) {
-			cube = getNewCube(cube);
-			n = kb.nextInt();
-			for(int j = 0; j < n; j++) {
-				String dir = kb.next();
-				turnCube(dir, cube);
+
+		int T = kb.nextInt();
+
+		for(int i = 0; i < T; i++){
+			int N = kb.nextInt();
+			String[] moves = new String[N];
+			for(int j = 0; j < N; j++){
+				moves[j] = kb.next();
 			}
-			printUpperPartOfCube(cube, sb);
+			String result = getTopAfterMove(N, moves);
+			System.out.println(result);
 		}
 		kb.close();
-		System.out.println(sb);
 	}
 
-	private void printUpperPartOfCube(char[][] cube, StringBuilder sb) {
-		for(int i = 0; i < 9; i++) {
-			sb.append(cube[0][i]);
-			if(i % 3 == 2)
-				sb.append("\n");
-		}	
+	private final char WHITE  = 'w';
+	private final char YELLOW = 'y';
+	private final char RED    = 'r';
+	private final char ORANGE = 'o';
+	private final char GREEN  = 'g';
+	private final char BLUE   = 'b';
+
+	private final char UP    = 'U';
+	private final char DOWN  = 'D';
+	private final char FRONT = 'F';
+	private final char BACK  = 'B';
+	private final char LEFT  = 'L';
+	private final char RIGHT = 'R';
+
+	private final int UP_INDEX = 0;
+	private final int DOWN_INDEX = 1;
+	private final int FRONT_INDEX = 2;
+	private final int BACK_INDEX = 3;
+	private final int LEFT_INDEX = 4;
+	private final int RIGHT_INDEX = 5;
+
+	private String getTopAfterMove(int n, String[] moves) {
+		char[][][] cube = initCube();
+
+		for(String move : moves){
+			char dimension = move.charAt(0);
+			char dir = move.charAt(1);
+			if(dir == '-'){
+				for(int i = 0; i < 2; i++){
+					cube = moveCube(cube, dimension);
+				}
+			}
+			cube = moveCube(cube, dimension);
+		}
+
+		String result = getTop(cube);
+		return result;
 	}
 
-	private void turnCube(String dir, char[][] cube) {
-		if(dir.charAt(0) == 'L') {
-			if(dir.charAt(1) == '+') {
-				turnLeft(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnLeft(cube);
-			}
-		}
-		else if(dir.charAt(0) == 'R') {
-			if(dir.charAt(1) == '+') {
-				turnRight(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnRight(cube);
-			}
-		}
-		else if(dir.charAt(0) == 'F') {
-			if(dir.charAt(1) == '+') {
-				turnFront(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnFront(cube);
-			}
-		}
-		else if(dir.charAt(0) == 'B') {
-			if(dir.charAt(1) == '+') {
-				turnBack(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnBack(cube);
-			}
-		}
-		else if(dir.charAt(0) == 'U') {
-			if(dir.charAt(1) == '+') {
-				turnUpper(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnUpper(cube);
-			}
-		}
-		else if(dir.charAt(0) == 'D') {
-			if(dir.charAt(1) == '+') {
-				turnDown(cube);
-			}
-			else {
-				for(int i = 0; i < 3; i++)
-					turnDown(cube);
-			}
-		}
-	}
-
-	
-	private void turnDown(char[][] cube) {
-		char a = cube[L][6], b = cube[L][7], c = cube[L][8];
-		char d = cube[R][8], e = cube[R][7], f = cube[R][6];
-		char g = cube[B][8], h = cube[B][7], i = cube[B][6];
-		char j = cube[F][6], k = cube[F][7], l = cube[F][8];
-		cube[F][6] = a; cube[F][7] = b; cube[F][8] = c;
-		cube[B][6] = d; cube[B][7] = e; cube[B][8] = f;
-		cube[L][6] = g; cube[L][7] = h; cube[L][8] = i;
-		cube[R][6] = j; cube[R][7] = k; cube[R][8] = l;
-		
-		rotateReverse(cube, D);
-	}
-
-	private void rotateReverse(char[][] cube, int dir) {
-		char a = cube[dir][2], b = cube[dir][1], c = cube[dir][0];
-		char d = cube[dir][5], 					 f = cube[dir][3];
-		char g = cube[dir][8], h = cube[dir][7], i = cube[dir][6];
-		cube[dir][2] = g; cube[dir][1] = d; cube[dir][0] = a;
-		cube[dir][5] = h; 					cube[dir][3] = b;
-		cube[dir][8] = i; cube[dir][7] = f; cube[dir][6] = c;
-	}
-
-	private void rotate(char[][] cube, int dir) {
-		char a = cube[dir][0], b = cube[dir][1], c = cube[dir][2];
-		char d = cube[dir][3], 					 f = cube[dir][5];
-		char g = cube[dir][6], h = cube[dir][7], i = cube[dir][8];
-		cube[dir][0] = g; cube[dir][1] = d; cube[dir][2] = a;
-		cube[dir][3] = h; 					cube[dir][5] = b;
-		cube[dir][6] = i; cube[dir][7] = f; cube[dir][8] = c;
-	}
-
-	private void turnUpper(char[][] cube) {
-		char a = cube[R][0], b = cube[R][1], c = cube[R][2];
-		char d = cube[L][2], e = cube[L][1], f = cube[L][0];
-		char g = cube[F][0], h = cube[F][1], i = cube[F][2];
-		char j = cube[B][2], k = cube[B][1], l = cube[B][0];
-		cube[F][0] = a; cube[F][1] = b; cube[F][2] = c;
-		cube[B][0] = d; cube[B][1] = e; cube[B][2] = f;
-		cube[L][0] = g; cube[L][1] = h; cube[L][2] = i;
-		cube[R][0] = j; cube[R][1] = k; cube[R][2] = l;
-		
-		rotate(cube, U);
-	}
-
-	private void turnBack(char[][] cube) {
-		char a = cube[R][2], b = cube[R][5], c = cube[R][8];
-		char d = cube[L][0], e = cube[L][3], f = cube[L][6];
-		char g = cube[U][2], h = cube[U][1], i = cube[U][0];
-		char j = cube[D][2], k = cube[D][1], l = cube[D][0];
-		cube[U][0] = a; cube[U][1] = b; cube[U][2] = c;
-		cube[D][0] = d; cube[D][1] = e; cube[D][2] = f;
-		cube[L][0] = g; cube[L][3] = h; cube[L][6] = i;
-		cube[R][2] = j; cube[R][5] = k; cube[R][8] = l;
-		
-		rotateReverse(cube, B);
-	}
-
-	private void turnFront(char[][] cube) {
-		char a = cube[L][8], b = cube[L][5], c = cube[L][2];
-		char d = cube[R][6], e = cube[R][3], f = cube[R][0];
-		char g = cube[D][6], h = cube[D][7], i = cube[D][8];
-		char j = cube[U][6], k = cube[U][7], l = cube[U][8];
-		cube[U][6] = a; cube[U][7] = b; cube[U][8] = c;
-		cube[D][6] = d; cube[D][7] = e; cube[D][8] = f;
-		cube[L][2] = g; cube[L][5] = h; cube[L][8] = i;
-		cube[R][0] = j; cube[R][3] = k; cube[R][6] = l;
-		
-		rotate(cube, F);
-	}
-
-	private void turnRight(char[][] cube) {
-		char a = cube[F][2], b = cube[F][5], c = cube[F][8];
-		char d = cube[B][2], e = cube[B][5], f = cube[B][8];
-		char g = cube[D][8], h = cube[D][5], i = cube[D][2];
-		char j = cube[U][8], k = cube[U][5], l = cube[U][2];
-		cube[U][2] = a; cube[U][5] = b; cube[U][8] = c;
-		cube[D][2] = d; cube[D][5] = e; cube[D][8] = f;
-		cube[F][2] = g; cube[F][5] = h; cube[F][8] = i;
-		cube[B][2] = j; cube[B][5] = k; cube[B][8] = l;
-		
-		rotate(cube, R);
-	}
-
-	private void turnLeft(char[][] cube) {
-		char a = cube[B][6], b = cube[B][3], c = cube[B][0];
-		char d = cube[F][6], e = cube[F][3], f = cube[F][0];
-		char g = cube[U][0], h = cube[U][3], i = cube[U][6];
-		char j = cube[D][0], k = cube[D][3], l = cube[D][6];
-		cube[U][0] = a; cube[U][3] = b; cube[U][6] = c;
-		cube[D][0] = d; cube[D][3] = e; cube[D][6] = f;
-		cube[F][0] = g; cube[F][3] = h; cube[F][6] = i;
-		cube[B][0] = j; cube[B][3] = k; cube[B][6] = l;
-		
-		rotate(cube, L);
-	}
-
-	private char[][] getNewCube(char[][] cube) {
-		for(int i = 0; i < 9; i++) {
-			cube[0][i] = 'w';
-		}
-		for(int i = 0; i < 9; i++) {
-			cube[1][i] = 'y';
-		}
-		for(int i = 0; i < 9; i++) {
-			cube[2][i] = 'r';
-		}
-		for(int i = 0; i < 9; i++) {
-			cube[3][i] = 'o';
-		}
-		for(int i = 0; i < 9; i++) {
-			cube[4][i] = 'g';
-		}
-		for(int i = 0; i < 9; i++) {
-			cube[5][i] = 'b';
+	private char[][][] moveCube(char[][][] cube, char dimension) {
+		switch (dimension){
+			case UP:
+				cube = moveUP(cube);
+				break;
+			case DOWN:
+				cube = moveDown(cube);
+				break;
+			case FRONT:
+				cube = moveFront(cube);
+				break;
+			case BACK:
+				cube = moveBack(cube);
+				break;
+			case LEFT:
+				cube = moveLeft(cube);
+				break;
+			case RIGHT:
+				cube = moveRight(cube);
+				break;
 		}
 		return cube;
+	}
+
+	private char[][][] moveRight(char[][][] cube) {
+		char[][] right = cube[RIGHT_INDEX];
+		turn(right);
+
+		char tmp1 = cube[UP_INDEX][0][2];
+		char tmp2 = cube[UP_INDEX][1][2];
+		char tmp3 = cube[UP_INDEX][2][2];
+
+		cube[UP_INDEX][0][2] = cube[FRONT_INDEX][0][2];
+		cube[UP_INDEX][1][2] = cube[FRONT_INDEX][1][2];
+		cube[UP_INDEX][2][2] = cube[FRONT_INDEX][2][2];
+
+		cube[FRONT_INDEX][0][2] = cube[DOWN_INDEX][2][2];
+		cube[FRONT_INDEX][1][2] = cube[DOWN_INDEX][1][2];
+		cube[FRONT_INDEX][2][2] = cube[DOWN_INDEX][0][2];
+
+		cube[DOWN_INDEX][0][2] = cube[BACK_INDEX][0][2];
+		cube[DOWN_INDEX][1][2] = cube[BACK_INDEX][1][2];
+		cube[DOWN_INDEX][2][2] = cube[BACK_INDEX][2][2];
+
+		cube[BACK_INDEX][0][2] = tmp3;
+		cube[BACK_INDEX][1][2] = tmp2;
+		cube[BACK_INDEX][2][2] = tmp1;
+
+		return cube;
+	}
+
+	private char[][][] moveLeft(char[][][] cube) {
+		char[][] left = cube[LEFT_INDEX];
+		turn(left);
+
+		char tmp1 = cube[UP_INDEX][0][0];
+		char tmp2 = cube[UP_INDEX][1][0];
+		char tmp3 = cube[UP_INDEX][2][0];
+
+		cube[UP_INDEX][0][0] = cube[BACK_INDEX][2][0];
+		cube[UP_INDEX][1][0] = cube[BACK_INDEX][1][0];
+		cube[UP_INDEX][2][0] = cube[BACK_INDEX][0][0];
+
+		cube[BACK_INDEX][0][0] = cube[DOWN_INDEX][0][0];
+		cube[BACK_INDEX][1][0] = cube[DOWN_INDEX][1][0];
+		cube[BACK_INDEX][2][0] = cube[DOWN_INDEX][2][0];
+
+		cube[DOWN_INDEX][0][0] = cube[FRONT_INDEX][2][0];
+		cube[DOWN_INDEX][1][0] = cube[FRONT_INDEX][1][0];
+		cube[DOWN_INDEX][2][0] = cube[FRONT_INDEX][0][0];
+
+		cube[FRONT_INDEX][0][0] = tmp1;
+		cube[FRONT_INDEX][1][0] = tmp2;
+		cube[FRONT_INDEX][2][0] = tmp3;
+
+		return cube;
+	}
+
+	private char[][][] moveBack(char[][][] cube) {
+		char[][] back = cube[BACK_INDEX];
+		counterTurn(back);
+
+		char tmp1 = cube[UP_INDEX][0][0];
+		char tmp2 = cube[UP_INDEX][0][1];
+		char tmp3 = cube[UP_INDEX][0][2];
+
+		cube[UP_INDEX][0][0] = cube[RIGHT_INDEX][0][2];
+		cube[UP_INDEX][0][1] = cube[RIGHT_INDEX][1][2];
+		cube[UP_INDEX][0][2] = cube[RIGHT_INDEX][2][2];
+
+		cube[RIGHT_INDEX][0][2] = cube[DOWN_INDEX][0][2];
+		cube[RIGHT_INDEX][1][2] = cube[DOWN_INDEX][0][1];
+		cube[RIGHT_INDEX][2][2] = cube[DOWN_INDEX][0][0];
+
+		cube[DOWN_INDEX][0][0] = cube[LEFT_INDEX][0][0];
+		cube[DOWN_INDEX][0][1] = cube[LEFT_INDEX][1][0];
+		cube[DOWN_INDEX][0][2] = cube[LEFT_INDEX][2][0];
+
+		cube[LEFT_INDEX][0][0] = tmp3;
+		cube[LEFT_INDEX][1][0] = tmp2;
+		cube[LEFT_INDEX][2][0] = tmp1;
+
+		return cube;
+	}
+
+	private char[][][] moveFront(char[][][] cube) {
+		char[][] front = cube[FRONT_INDEX];
+		turn(front);
+
+		char tmp1 = cube[UP_INDEX][2][0];
+		char tmp2 = cube[UP_INDEX][2][1];
+		char tmp3 = cube[UP_INDEX][2][2];
+
+		cube[UP_INDEX][2][0] =  cube[LEFT_INDEX][2][2];
+		cube[UP_INDEX][2][1] =  cube[LEFT_INDEX][1][2];
+		cube[UP_INDEX][2][2] =  cube[LEFT_INDEX][0][2];
+
+		cube[LEFT_INDEX][0][2] = cube[DOWN_INDEX][2][0];
+		cube[LEFT_INDEX][1][2] = cube[DOWN_INDEX][2][1];
+		cube[LEFT_INDEX][2][2] = cube[DOWN_INDEX][2][2];
+
+		cube[DOWN_INDEX][2][0] = cube[RIGHT_INDEX][2][0];
+		cube[DOWN_INDEX][2][1] = cube[RIGHT_INDEX][1][0];
+		cube[DOWN_INDEX][2][2] = cube[RIGHT_INDEX][0][0];
+
+		cube[RIGHT_INDEX][0][0] = tmp1;
+		cube[RIGHT_INDEX][1][0] = tmp2;
+		cube[RIGHT_INDEX][2][0] = tmp3;
+
+		return cube;
+	}
+
+	private char[][][] moveDown(char[][][] cube) {
+		char[][] down = cube[DOWN_INDEX];
+		counterTurn(down);
+
+		char tmp1 = cube[FRONT_INDEX][2][0];
+		char tmp2 = cube[FRONT_INDEX][2][1];
+		char tmp3 = cube[FRONT_INDEX][2][2];
+
+		cube[FRONT_INDEX][2][0] = cube[LEFT_INDEX][2][0];
+		cube[FRONT_INDEX][2][1] = cube[LEFT_INDEX][2][1];
+		cube[FRONT_INDEX][2][2] = cube[LEFT_INDEX][2][2];
+
+		cube[LEFT_INDEX][2][0] = cube[BACK_INDEX][2][2];
+		cube[LEFT_INDEX][2][1] = cube[BACK_INDEX][2][1];
+		cube[LEFT_INDEX][2][2] = cube[BACK_INDEX][2][0];
+
+		cube[BACK_INDEX][2][0] = cube[RIGHT_INDEX][2][2];
+		cube[BACK_INDEX][2][1] = cube[RIGHT_INDEX][2][1];
+		cube[BACK_INDEX][2][2] = cube[RIGHT_INDEX][2][0];
+
+		cube[RIGHT_INDEX][2][0] = tmp1;
+		cube[RIGHT_INDEX][2][1] = tmp2;
+		cube[RIGHT_INDEX][2][2] = tmp3;
+
+		return cube;
+	}
+
+	private char[][][] moveUP(char[][][] cube) {
+		char[][] top = cube[UP_INDEX];
+		turn(top);
+
+		char tmp1 = cube[FRONT_INDEX][0][0];
+		char tmp2 = cube[FRONT_INDEX][0][1];
+		char tmp3 = cube[FRONT_INDEX][0][2];
+
+		cube[FRONT_INDEX][0][0] = cube[RIGHT_INDEX][0][0];
+		cube[FRONT_INDEX][0][1] = cube[RIGHT_INDEX][0][1];
+		cube[FRONT_INDEX][0][2] = cube[RIGHT_INDEX][0][2];
+
+		cube[RIGHT_INDEX][0][0] = cube[BACK_INDEX][0][2];
+		cube[RIGHT_INDEX][0][1] = cube[BACK_INDEX][0][1];
+		cube[RIGHT_INDEX][0][2] = cube[BACK_INDEX][0][0];
+
+		cube[BACK_INDEX][0][0] = cube[LEFT_INDEX][0][2];
+		cube[BACK_INDEX][0][1] = cube[LEFT_INDEX][0][1];
+		cube[BACK_INDEX][0][2] = cube[LEFT_INDEX][0][0];
+
+		cube[LEFT_INDEX][0][0] = tmp1;
+		cube[LEFT_INDEX][0][1] = tmp2;
+		cube[LEFT_INDEX][0][2] = tmp3;
+
+		return cube;
+	}
+
+	private void turn(char[][] dimension){
+		char[][] clone = clone(dimension);
+
+		dimension[0][0] = clone[2][0];
+		dimension[0][1] = clone[1][0];
+		dimension[0][2] = clone[0][0];
+		dimension[1][0] = clone[2][1];
+		dimension[2][0] = clone[2][2];
+		dimension[2][1] = clone[1][2];
+		dimension[2][2] = clone[0][2];
+		dimension[1][2] = clone[0][1];
+	}
+
+	private void counterTurn(char[][] dimension){
+		char[][] clone = clone(dimension);
+
+		dimension[0][0] = clone[0][2];
+		dimension[0][1] = clone[1][2];
+		dimension[0][2] = clone[2][2];
+		dimension[1][0] = clone[0][1];
+		dimension[1][2] = clone[2][1];
+		dimension[2][0] = clone[0][0];
+		dimension[2][1] = clone[1][0];
+		dimension[2][2] = clone[2][0];
+	}
+
+	private char[][] clone(char[][] arr) {
+		char[][] clone = new char[3][3];
+		for(int i = 0; i < 3; i++){
+			clone[i] = arr[i].clone();
+		}
+		return clone;
+	}
+
+	private String getTop(char[][][] cube) {
+		StringBuilder sb = new StringBuilder();
+
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				sb.append(cube[0][i][j]);
+			}
+			if(i < 2){
+				sb.append("\n");
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private char[][][] initCube() {
+		char[][][] cube = new char[6][][];
+
+		cube[0] = fillDimensionWith(WHITE); // top
+		cube[1] = fillDimensionWith(YELLOW); //bottom
+		cube[2] = fillDimensionWith(RED); // front
+		cube[3] = fillDimensionWith(ORANGE);// back
+		cube[4] = fillDimensionWith(GREEN);// left
+		cube[5] = fillDimensionWith(BLUE);// right
+
+		return cube;
+	}
+
+	private char[][] fillDimensionWith(char color) {
+		char[][] dimension = new char[3][3];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				dimension[i][j] = color;
+			}
+		}
+		return dimension;
 	}
 }
