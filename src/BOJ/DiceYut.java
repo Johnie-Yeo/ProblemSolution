@@ -1,133 +1,59 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class DiceYut{
-    private class Horse{
-        int location;
-        int score;
-        int blueMapIndex;
-        public Horse(){
-            this.location = 0;
-            this.score = 0;
-            this.blueMapIndex = -1;
-        }
-        public Horse(int location, int score, int blueMapIndex){
-            this.location = location;
-            this.score = score;
-            this.blueMapIndex = blueMapIndex;
-        }
-        public void setBlueMapIndex(int index){
-            this.blueMapIndex = index;
-        }
-        public void move(int move){
-            this.location += move;
-        }
-        public void addScore(int score){
-            this.score += score;
-        }
-        public Horse clone(){
-            return new Horse(this.location, this.score, this.blueMapIndex);
-        }
-
-        public boolean isOnSameLocation(Horse horse) {
-            if(this.isOnExactlySameRouteAndLocation(horse)){
-                return true;
-            }else if(this.isDifferentRouteButSameLocation(horse)){
-                return true;
-            }
-            return false;
-        }
-
-        private boolean isDifferentRouteButSameLocation(Horse horse) {
-            if(this.location >= 0 && horse.location >= 0){
-                if(this.blueMapIndex >= 0 && horse.blueMapIndex >= 0){
-                    if(this.getBlueLocation() > 3 && (this.getBlueLocation() == horse.getBlueLocation())){
-                        return true;
-                    }
-                }else if(this.blueMapIndex >= 0){
-                    if(this.getBlueLocation() == 7 && horse.location == 20){
-                        return true;
-                    }
-                }else if(horse.blueMapIndex >= 0){
-                    if(this.location == 20 && horse.getBlueLocation() == 7){
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private boolean isOnExactlySameRouteAndLocation(Horse horse){
-            if(this.location >= 0 && horse.location >= 0){
-                return (this.location == horse.location && this.blueMapIndex == horse.blueMapIndex);
-            };
-            return false;
-        }
-        private int getBlueLocation(){
-            if(this.isOnBluePath() && this.location >= 0){
-                if(this.blueMapIndex == 1){
-                    return this.location+1;
-                }else{
-                    return this.location;
-                }
-            }
-            return -1;
-        }
-        private boolean isOnBluePath(){
-            if(this.blueMapIndex >= 0){
-                return true;
-            }
-            return false;
-        }
-    }
     public static void main(String[] args) {
-//        new DiceYut().solve();
+//        new Main().solve();
         new DiceYut().test();
     }
     private void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
+        String input;
+        int expect;
 
-        int[] input;
-        int result, expect;
-
-        input = new int[]{1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-        result = getMaxScore(input);
+        input = "1 2 3 4 1 2 3 4 1 2";
         expect = 190;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-        result = getMaxScore(input);
+        input = "1 1 1 1 1 1 1 1 1 1";
         expect = 133;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{5, 1, 2, 3, 4, 5, 5, 3, 2, 4};
-        result = getMaxScore(input);
+        input = "5 1 2 3 4 5 5 3 2 4";
         expect = 214;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
-        result = getMaxScore(input);
+        input = "5 5 5 5 5 5 5 5 5 5";
         expect = 130;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{5, 5, 5, 5, 5, 1, 1, 1, 1, 1};
-        result = getMaxScore(input);
+        input = "5 5 5 5 5 1 1 1 1 1";
         expect = 167;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{5, 5, 5, 5, 5, 2, 2, 2, 2, 2};
-        result = getMaxScore(input);
+        input = "5 5 5 5 5 2 2 2 2 2";
         expect = 160;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        input = new int[]{5, 5, 5, 5, 5, 2, 2, 1, 3, 3};
-        result = getMaxScore(input);
+        input = "5 5 5 5 5 2 2 1 3 3";
         expect = 161;
+        testCase(input, expect);
+    }
+
+    private void testCase(String input, int expect) {
+        Test test = new Test();
+
+        int[] arr = InputParser.parseStringToIntArray(input);
+        int result = getMaxScore(arr);
         test.test(result, expect).printResult();
     }
+
     private void solve(){
         Scanner kb = new Scanner(System.in);
 
@@ -140,114 +66,231 @@ public class DiceYut{
         System.out.println(result);
     }
 
+    private class Point{
+        int x, y;
+        public Point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+        public Point clone(){
+            return new Point(this.x, this.y);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[]{this.x, this.y});
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            Point p = (Point)obj;
+            return (this.x == p.x && this.y == p.y);
+        }
+    }
     private int getMaxScore(int[] input) {
-        Horse[] horse = initHorse();
+        int[][] map = initMap();
 
-        int[] redMap = getRedMap();
-        int[][] blueMap = getBlueMap();
+        ArrayList<Point> horses = initHorse();
+        int result = dfs(input, 0, map, horses, 0);
 
-        int max = dfs(0, input, horse, redMap, blueMap);
-
-        return max;
+        return result;
     }
 
-    private Horse[] initHorse() {
-        Horse[] horse = new Horse[4];
-        for(int i = 0; i < 4; i++){
-            horse[i] = new Horse();
-        }
-        return horse;
-    }
-
-    private int dfs(int index, int[] input, Horse[] horses, int[] redMap, int[][] blueMap) {
-        if(index >= 10){
-            return sum(horses);
-        }
-        int move = input[index++];
+    private int dfs(int[] input, int index, int[][] map, ArrayList<Point> horses, int cur) {
         int max = 0;
-        for(int i = 0; i < 4; i++){
-            Horse movedHorse = moveHorse(horses, i, move, redMap, blueMap);
-            if(movedHorse == null || isDuplicated(horses, movedHorse)){
+
+        if(index >= 10){
+            return cur;
+        }
+
+        ArrayList<Point> list = clone(horses);
+
+        int loopIndex = 0;
+        for(Point horse : horses){
+            if(isEndPoint(horse)){
                 continue;
             }
-            Horse tmp = horses[i];
-            horses[i] = movedHorse;
-            int result = dfs(index, input, horses, redMap, blueMap);
-            horses[i] = tmp;
+            Point next = move(horse, input[index]);
+            if(!isEndPoint(next) && contain(horses, next)){
+                continue;
+            }
+
+            list.remove(horse);
+            list.add(loopIndex, next);
+
+            int added = cur + map[next.x][next.y];
+            int result = dfs(input, index+1, map, list, added);
             max = Math.max(max, result);
+
+            list.remove(next);
+            list.add(loopIndex, horse);
+
+            loopIndex++;
         }
+
         return max;
     }
 
-    private boolean isDuplicated(Horse[] horses, Horse movedHorse) {
-        for(Horse horse : horses){
-            if(movedHorse.isOnSameLocation(horse)){
-                return true;
+    private boolean contain(ArrayList<Point> horses, Point point) {
+        if(horses.contains(point)){
+            return true;
+        }
+        HashSet<Point> centers = getCenter();
+        if(centers.contains(point)){
+            for(Point horse : horses){
+                if(centers.contains(horse)){
+                    return true;
+                }
             }
         }
+        HashSet<Point> last = getLast();
+        if(last.contains(point)){
+            for(Point horse : horses){
+                if(last.contains(horse)){
+                    return true;
+                }
+            }
+        }
+
+        HashSet<Point> last30 = get30();
+        if(last30.contains(point)){
+            for(Point horse : horses){
+                if(last30.contains(horse)){
+                    return true;
+                }
+            }
+        }
+
+        HashSet<Point> last35 = get35();
+        if(last35.contains(point)){
+            for(Point horse : horses){
+                if(last35.contains(horse)){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
-    private Horse moveHorse(Horse[] horses, int index, int move, int[] redMap, int[][] blueMap) {
-        Horse horse = horses[index].clone();
-        if(horse.location < 0){
-            return null;
-        }
-        horse.move(move);
-        int score = getScore(horse, redMap, blueMap);
-        horse.addScore(score);
-        if(switchableToBluePath(horse)){
-            horse.setBlueMapIndex(horse.location/5-1);
-            horse.location = 0;
-        }
-        return horse;
+    private HashSet<Point> get30() {
+        HashSet<Point> set = new HashSet<>();
+
+        Point p2 = new Point(1, 5);
+        Point p3 = new Point(2, 4);
+        Point p4 = new Point(3, 5);
+
+        set.add(p2);
+        set.add(p3);
+        set.add(p4);
+
+        return set;
     }
 
-    private boolean switchableToBluePath(Horse horse) {
-        if(horse.blueMapIndex < 0){
-            if(horse.location <= 15 && horse.location % 5 == 0){
-                return true;
-            }
-        }
-        return false;
+    private HashSet<Point> get35() {
+        HashSet<Point> set = new HashSet<>();
+
+        Point p2 = new Point(1, 6);
+        Point p3 = new Point(2, 5);
+        Point p4 = new Point(3, 6);
+
+        set.add(p2);
+        set.add(p3);
+        set.add(p4);
+
+        return set;
     }
 
-    private int getScore(Horse horse, int[] redMap, int[][] blueMap) {
-        try{
-            if(horse.blueMapIndex < 0){
-                return redMap[horse.location-1];
-            }else{
-                return blueMap[horse.blueMapIndex][horse.location-1];
-            }
-        }catch (ArrayIndexOutOfBoundsException e){
-            horse.location = -1;
-            return 0;
-        }
+    private HashSet<Point> getLast() {
+        HashSet<Point> set = new HashSet<>();
 
+        Point p1 = new Point(0, 20);
+        Point p2 = new Point(1, 7);
+        Point p3 = new Point(2, 6);
+        Point p4 = new Point(3, 7);
+
+        set.add(p1);
+        set.add(p2);
+        set.add(p3);
+        set.add(p4);
+
+        return set;
     }
 
-    private int[][] getBlueMap() {
-        int[][]map = {
-                {13, 16, 19, 25, 30, 35, 40},
-                {    22, 24, 25, 30, 35, 40},
-                {28, 27, 26, 25, 30, 35, 40}
-        };
+    private HashSet<Point> getCenter() {
+        HashSet<Point> set = new HashSet<>();
+
+        Point p1 = new Point(1, 4);
+        Point p2 = new Point(2, 3);
+        Point p3 = new Point(3, 4);
+
+        set.add(p1);
+        set.add(p2);
+        set.add(p3);
+
+        return set;
+    }
+
+    private boolean isEndPoint(Point point) {
+        HashSet<Point> set = new HashSet<>();
+        Point p1 = new Point(0, 21);
+        Point p2 = new Point(1, 8);
+        Point p3 = new Point(2, 7);
+        Point p4 = new Point(3, 8);
+
+        set.add(p1);
+        set.add(p2);
+        set.add(p3);
+        set.add(p4);
+
+        return set.contains(point);
+    }
+
+    private ArrayList<Point> clone(ArrayList<Point> list) {
+        return list.stream().map(point -> point.clone()).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private Point move(Point horse, int i) {
+        int x = horse.x;
+        int y = horse.y + i;
+
+        if(x == 0 && y > 0 && y < 20 && y % 5 == 0){
+            return new Point(y/5, 0);
+        }else if(x == 0 && y >= 22){
+            return new Point(x, 21);
+        }else if((x == 1 || x == 3) && y >= 8){
+            return new Point(x, 8);
+        }else if(x == 2 && y >= 7){
+            return new Point(x, 7);
+        }else{
+            return new Point(x, y);
+        }
+    }
+
+    private ArrayList<Point> initHorse() {
+        ArrayList<Point> horses = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            horses.add(new Point(0, 0));
+        }
+        return horses;
+    }
+
+    private int[][] initMap() {
+        int[][] map = new int[4][];
+        map[0] = getBaseMap();
+        map[1] = new int[]{10, 13, 16, 19, 25, 30, 35, 40, 0};
+        map[2] = new int[]{20,     22, 24, 25, 30, 35, 40, 0};
+        map[3] = new int[]{30, 28, 27, 26, 25, 30, 35, 40, 0};
+
         return map;
     }
 
-    private int[] getRedMap() {
-        int[] map = new int[20];
-        for(int i = 0; i < 20; i++){
-            map[i] = 2*(i+1);
+    private int[] getBaseMap() {
+        int[] arr = new int[22];
+        for(int i = 0; i < 21; i++){
+            arr[i] = 2 * i;
         }
-        return map;
+        return arr;
     }
 
-    private int sum(Horse[] horses){
-        int sum = 0;
-        for(Horse horse : horses){
-            sum += horse.score;
-        }
-        return sum;
-    }
 }

@@ -1,59 +1,87 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Gerrymandering2{
     public static void main(String[] args) {
-        Gerrymandering2 app = new Gerrymandering2();
-        app.test();
-//        app.solve();
+        new Gerrymandering2().test();
+//        new Main().solve();
     }
     public void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
+        String input;
+        int expect;
 
-        int N = 6;
-        int[][] map = {
-                {1, 2, 3, 4, 1, 6},
-                {7, 8, 9, 1, 4, 2},
-                {2, 3, 4, 1, 1, 3},
-                {6, 6, 6, 6, 9, 4},
-                {9, 1, 9, 1, 9, 5},
-                {1, 1, 1, 1, 9, 9}
-        };
-        int result = gerrymandering(N, map);
-        int expect = 18;
-        test.test(result, expect).printResult();
+        input = "6\n" +
+                "1 2 3 4 1 6\n" +
+                "7 8 9 1 4 2\n" +
+                "2 3 4 1 1 3\n" +
+                "6 6 6 6 9 4\n" +
+                "9 1 9 1 9 5\n" +
+                "1 1 1 1 9 9";
+        expect = 18;
+        testCase(input, expect);
 
-        N = 6;
-        map = new int[][]{
-                {5, 5, 5, 5, 5, 5},
-                {5, 5, 5, 5, 5, 5},
-                {5, 5, 5, 5, 5, 5},
-                {5, 5, 5, 5, 5, 5},
-                {5, 5, 5, 5, 5, 5},
-                {5, 5, 5, 5, 5, 5}
-        };
-        result = gerrymandering(N, map);
+        input = "6\n" +
+                "5 5 5 5 5 5\n" +
+                "5 5 5 5 5 5\n" +
+                "5 5 5 5 5 5\n" +
+                "5 5 5 5 5 5\n" +
+                "5 5 5 5 5 5\n" +
+                "5 5 5 5 5 5";
         expect = 20;
-        test.test(result, expect).printResult();
+        testCase(input, expect);
 
-        N = 8;
-        map = new int[][]{
-                {1, 2, 3, 4, 5, 6, 7, 8},
-                {2, 3, 4, 5, 6, 7, 8, 9},
-                {3, 4, 5, 6, 7, 8, 9, 1},
-                {4, 5, 6, 7, 8, 9, 1, 2},
-                {5, 6, 7, 8, 9, 1, 2, 3},
-                {6, 7, 8, 9, 1, 2, 3, 4},
-                {7, 8, 9, 1, 2, 3, 4, 5},
-                {8, 9, 1, 2, 3, 4, 5, 6}
-        };
-        result = gerrymandering(N, map);
+        input = "8\n" +
+                "1 2 3 4 5 6 7 8\n" +
+                "2 3 4 5 6 7 8 9\n" +
+                "3 4 5 6 7 8 9 1\n" +
+                "4 5 6 7 8 9 1 2\n" +
+                "5 6 7 8 9 1 2 3\n" +
+                "6 7 8 9 1 2 3 4\n" +
+                "7 8 9 1 2 3 4 5\n" +
+                "8 9 1 2 3 4 5 6";
         expect = 23;
+        testCase(input, expect);
+
+        input = "20\n" +
+                "1 2 3 4 5 6 7 8 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "2 3 4 5 6 7 8 9 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "3 4 5 6 7 8 9 1 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "4 5 6 7 8 9 1 2 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "5 6 7 8 9 1 2 3 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "6 7 8 9 1 2 3 4 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "7 8 9 1 2 3 4 5 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "8 9 1 2 3 4 5 6 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+                "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+        expect = 23;
+        testCase(input, expect);
+    }
+
+    private void testCase(String input, int expect) {
+        Test test = new Test();
+        String[] parsed = input.split("\n", 2);
+        int N = Integer.parseInt(parsed[0]);
+        int[][] map = InputParser.parseStringTo2DIntArray(parsed[1]);
+        int result = gerrymandering(N, map);
         test.test(result, expect).printResult();
     }
+
     public void solve(){
         Scanner kb = new Scanner(System.in);
 
@@ -69,156 +97,205 @@ public class Gerrymandering2{
         kb.close();
     }
 
+    private class Border{
+        int x, y;
+        int d1, d2;
+        public Border(int x, int y, int d1, int d2){
+            this.x = x;
+            this.y = y;
+            this.d1 = d1;
+            this.d2 = d2;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[]{ this.x, this.y, this.d1, this.d2});
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            Border o = (Border)obj;
+            return (this.x == o.x && this.y == o.y && this.d1 == o.d1 && this.d2 == o.d2);
+        }
+    }
     private int gerrymandering(int n, int[][] people) {
-        int min = Integer.MAX_VALUE;
-        for(int x = 0; x < n; x++){
-            for(int y = 0; y < n; y++){
-                for(int d1 = 0; d1 < n-2; d1++){
-                    for(int d2 = n-1-d1; d2 >= 0; d2--){
-                        if(isFeasible(x, y, d1, d2, n)){
-                            int[][] area = getArea(n, x, y, d1, d2);
-                            int diff = getDiff(n, people, area);
-                            min = Math.min(min, diff);
-                        }
-                    }
-                }
-            }
-        }
+        HashSet<Border> borderInfoComb = getBorderInfoComb(n);
 
+        int min = Integer.MAX_VALUE;
+        for(Border border : borderInfoComb){
+            int[][] clone = clone(people);
+            int[] population = getEachAreasPopulation(border, clone, n);
+            int diff = getMaxMinDiff(population);
+            min = Math.min(diff, min);
+        }
         return min;
     }
-    private boolean isFeasible(int x, int y, int d1, int d2, int N){
-        if(
-                (d1 >= 0 && d2 >= 0) &&
-                (x >= 0 && x+d1+d2 > x && N-1 >= x+d1+d2) &&
-                (y-d1 >= 0 && y > y-d1 && y+d2 > y && N-1 >= y+d2)
-        ){
-            return true;
-        }
-        return false;
+
+    private HashSet<Border> getBorderInfoComb(int n) {
+        int d1 = 1;
+        int d2 = 1;
+        int x = 0;
+        int y = 1;
+        HashSet<Border> set = new HashSet<>();
+        dfs(x, y, d1, d2, n, set);
+        return set;
     }
-    private int[][] getArea(int n, int x, int y, int d1, int d2){
-        int[][] area = new int[n][n];
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                area[i][j] = getAreaNumber(n, i, j, x, y, d1, d2);
+
+    private void dfs(int x, int y, int d1, int d2, int n, HashSet<Border> set) {
+        Border border = new Border(x, y, d1, d2);
+        if(isOutOfRange(x, y, d1, d2, n) || set.contains(border)){
+            return;
+        }
+        set.add(border);
+
+        dfs(x, y,d1+1, d2, n, set);
+        dfs(x, y, d1,d2+1, n, set);
+        dfs(x+1, y, d1, d2, n, set);
+        dfs(x, y+1, d1, d2, n, set);
+    }
+
+    private boolean isOutOfRange(int x, int y, int d1, int d2, int n) {
+        return (x+d1+d2 >= n || y - d1 < 0 || y + d2 >= n);
+    }
+
+    private int[][] clone(int[][] people) {
+        return Arrays.stream(people).map(arr -> Arrays.stream(arr).toArray()).toArray(int[][]::new);
+    }
+
+    private int[] getEachAreasPopulation(Border border, int[][] people, int n) {
+        int[] population = new int[5];
+        population[4] = getFifthArea(border, people, n);
+
+        population[0] = getFirstArea(border, people);
+        population[1] = getSecondArea(border, people, n);
+        population[2] = getThirdArea(border, people, n);
+        population[3] = getForthArea(border, people, n);
+
+        return population;
+    }
+
+    private int getForthArea(Border border, int[][] people, int n) {
+        int count = 0;
+        for(int i = (border.x + border.d2+1); i < n; i++){
+            for(int j = (border.y - border.d1 + border.d2); j < n; j++){
+                count += people[i][j];
             }
         }
-        area = checkArea5(area, x, y, d1, d2, n);
-        return area;
+        return count;
     }
 
-    private int[][] checkArea5(int[][] area, int x, int y, int d1, int d2, int n) {
-        area = checkBorder(area, x, y, d1, d2);
-        area = fillArea5(area, x, y, d1, d2, n);
-        return area;
-    }
-
-    private int[][] fillArea5(int[][] area, int x, int y, int d1, int d2, int n) {
-        for(int i = 0; i < n; i++){
-            int point = -1;
-            for(int j = 0; j < n; j++){
-                if(area[i][j] == 5){
-                    if(point < 0){
-                        point = j;
-                    }else{
-                        for(int index = point; index <= j; index++){
-                            area[i][index] = 5;
-                        }
-                    }
-                }
+    private int getThirdArea(Border border, int[][] people, int n) {
+        int count = 0;
+        for(int i = (border.x + border.d1); i < n; i++){
+            for(int j = 0; j < (border.y - border.d1 + border.d2); j++){
+                count += people[i][j];
             }
         }
-        return area;
+        return count;
     }
 
-    private int[][] checkBorder(int[][] area, int x, int y, int d1, int d2) {
-        area = checkFirstLine(area, x, y, d1, d2);
-        area = checkSecondLine(area, x, y, d1, d2);
-        area = checkThirdLine(area, x, y, d1, d2);
-        area = checkForthLine(area, x, y, d1, d2);
-        return area;
-    }
-
-    private int[][] checkForthLine(int[][] area, int x, int y, int d1, int d2) {
-        for(int i = 0; i <= d1; i++){
-            area[x+d2+i][y+d2-i] = 5;
-        }
-        return area;
-    }
-
-    private int[][] checkThirdLine(int[][] area, int x, int y, int d1, int d2) {
-        for(int i = 0; i <= d2; i++){
-            area[x+d1+i][y-d1+i] = 5;
-        }
-        return area;
-    }
-
-    private int[][] checkSecondLine(int[][] area, int x, int y, int d1, int d2) {
-        for(int i = 0; i <= d2; i++){
-            area[x+i][y+i] = 5;
-        }
-        return area;
-    }
-
-    private int[][] checkFirstLine(int[][] area, int x, int y, int d1, int d2) {
-        for(int i = 0; i <= d1; i++){
-            area[x+i][y-i] = 5;
-        }
-        return area;
-    }
-
-    private int getAreaNumber(int N, int r, int c, int x, int y, int d1, int d2) {
-        int area = 0;
-        if(isNumber1(N, r, c, x, y, d1, d2)){
-            area = 1;
-        }else if(isNumber2(N, r, c, x, y, d1, d2)){
-            area = 2;
-        }else if(isNumber3(N, r, c, x, y, d1, d2)){
-            area = 3;
-        }else if(isNumber4(N, r, c, x, y, d1, d2)){
-            area = 4;
-        }else{
-            return -1;
-        }
-        return area;
-    }
-    private boolean isNumber1(int N, int r, int c, int x, int y, int d1, int d2){
-        return ((r >= 0 && x+d1 > r) && (c >= 0 && y >= c));
-    }
-    private boolean isNumber2(int N, int r, int c, int x, int y, int d1, int d2){
-        return ((r >= 0 && x+d2 >= r) && (c > y && N-1 >= c));
-    }
-    private boolean isNumber3(int N, int r, int c, int x, int y, int d1, int d2){
-        return ((r >= x+d1 && N-1 >= r) && (c >= 0 && y-d1+d2 > c));
-    }
-    private boolean isNumber4(int N, int r, int c, int x, int y, int d1, int d2){
-        return ((r > x+d2 && N-1 >= r) && (c >= y-d1+d2 && N-1 >= c));
-    }
-    private int getDiff(int n, int[][] population, int[][] area){
-        int[] people = new int[5];
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++) {
-                int numberOfArea = area[i][j]-1;
-                people[numberOfArea] += population[i][j];
+    private int getSecondArea(Border border, int[][] people, int n) {
+        int count = 0;
+        for(int i = 0; i <= (border.x + border.d2); i++){
+            for(int j = border.y+1; j < n; j++){
+                count += people[i][j];
             }
         }
-        int max = getMax(people);
-        int min = getMin(people);
-        return max - min;
+        return count;
     }
-    private int getMax(int[] arr){
+
+    private int getFirstArea(Border border, int[][] people) {
+        int count = 0;
+        for(int i = 0; i < (border.x + border.d1); i++){
+            for(int j = 0; j <= border.y; j++){
+                count += people[i][j];
+            }
+        }
+        return count;
+    }
+
+    private class Point{
+        int x, y;
+        public Point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            Point p = (Point)obj;
+            return (this.x == p.x && this.y == p.y);
+        }
+
+        public Point clone(){
+            return new Point(this.x, this.y);
+        }
+    }
+    private int getFifthArea(Border border, int[][] people, int n) {
+        int count = 0;
+        ArrayList<Point> line = getLine(border);
+        Point end = new Point(border.x + border.d2, border.y + border.d2);
+        while(!line.get(0).equals(end)){
+            for(Point point : line){
+                int x = point.x;
+                int y = point.y;
+                count += people[x][y];
+                people[x][y] = 0;
+            }
+            int size = line.size();
+            for(int i = 0; i < size-1; i++){
+                int x = line.get(i).x+1;
+                int y = line.get(i).y;
+                count += people[x][y];
+                people[x][y] = 0;
+            }
+
+            line = moveDown(line);
+        }
+        for(Point point : line){
+            int x = point.x;
+            int y = point.y;
+            count += people[x][y];
+            people[x][y] = 0;
+        }
+        return count;
+    }
+
+    private ArrayList<Point> moveDown(ArrayList<Point> line) {
+        ArrayList<Point> list = new ArrayList<>();
+
+        for(Point point : line){
+            int x = point.x + 1;
+            int y = point.y + 1;
+            Point next = new Point(x, y);
+            list.add(next);
+        }
+
+        return list;
+    }
+
+    private ArrayList<Point> getLine(Border border) {
+        ArrayList<Point> list = new ArrayList<>();
+        Point start = new Point(border.x, border.y);
+        Point end = new Point(border.x + border.d1, border.y - border.d1);
+
+        while(!start.equals(end)){
+            list.add(start.clone());
+            start.x += 1;
+            start.y -= 1;
+        }
+        list.add(end);
+
+        return list;
+    }
+
+    private int getMaxMinDiff(int[] population) {
         int max = 0;
-        for(int element : arr){
-            max = Math.max(max, element);
-        }
-        return max;
-    }
-    private int getMin(int[] arr){
         int min = Integer.MAX_VALUE;
-        for(int element : arr){
-            min = Math.min(element, min);
+        for(int people : population){
+            max = Math.max(people, max);
+            min = Math.min(people, min);
         }
-        return min;
+        return max - min;
     }
 }

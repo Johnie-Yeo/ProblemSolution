@@ -1,98 +1,205 @@
 package BOJ;
 
+import Test.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class KingOfFishing {
-	//���� 17143
-	//������ �ùķ��̼� ����
-	//��´� -> ����Ⱑ �̵��Ѵ��� �ݺ�
-	public int []dirX = {-1,1,0,0};
-	public int []dirY = {0,0,1,-1};
-	public class Shark{
-		int dir;
-		int speed;
-		int size;
-		public Shark(int dir, int speed, int size) {
-			this.dir = dir;
-			this.speed = speed;
-			this.size = size;
-		}
-	}
 	public static void main(String[] args) {
-		KingOfFishing app = new KingOfFishing();
-		app.solve();
+//		new Main().solve();
+		new KingOfFishing().test();
 	}
+
+	private void test() {
+		String input;
+		int expect;
+
+		input = "4 6 8\n" +
+				"4 1 3 3 8\n" +
+				"1 3 5 2 9\n" +
+				"2 4 8 4 1\n" +
+				"4 5 0 1 4\n" +
+				"3 3 1 2 7\n" +
+				"1 5 8 4 3\n" +
+				"3 6 2 1 2\n" +
+				"2 2 2 3 5";
+		expect = 22;
+		testCase(input, expect);
+
+		input = "100 100 0";
+		expect = 0;
+		testCase(input, expect);
+
+		input = "4 5 4\n" +
+				"4 1 3 3 8\n" +
+				"1 3 5 2 9\n" +
+				"2 4 8 4 1\n" +
+				"4 5 0 1 4";
+		expect = 22;
+		testCase(input, expect);
+
+		input = "2 2 4\n" +
+				"1 1 1 1 1\n" +
+				"2 2 2 2 2\n" +
+				"1 2 1 2 3\n" +
+				"2 1 2 1 4";
+		expect = 4;
+		testCase(input, expect);
+	}
+
+	private void testCase(String input, int expect) {
+		Test test = new Test();
+		String[] parsed = input.split("\n", 2);
+
+		int R = Integer.parseInt(parsed[0].split(" ")[0]);
+		int C = Integer.parseInt(parsed[0].split(" ")[1]);
+		int M = Integer.parseInt(parsed[0].split(" ")[2]);
+		int[][] sharks;
+		if(M > 0){
+			sharks = InputParser.parseStringTo2DIntArray(parsed[1]);
+		}else{
+			sharks = new int[0][5];
+		}
+		int result = getSumOfSizeOfFishedShark(R, C, M, sharks);
+		test.test(result, expect).printResult();
+	}
+
 	public void solve(){
 		Scanner kb = new Scanner(System.in);
 		int R = kb.nextInt();
 		int C = kb.nextInt();
-		int M = kb.nextInt(); // number of shark
-		Shark [][]map = new Shark[R+1][C+1];
-		for(int i = 0; i < M; i++) {
-			int r = kb.nextInt();
-			int c = kb.nextInt();
-			int s = kb.nextInt(); //speed
-			int d = kb.nextInt();//direction
-			int z = kb.nextInt(); //size
-			map[r][c] = new Shark(d-1,s,z);
+		int M = kb.nextInt();
+
+		int[][] sharks = new int[M][5];
+		for(int i = 0; i < M; i++){
+			for(int j = 0; j < 5; j++){
+				sharks[i][j] = kb.nextInt();
+			}
 		}
-		kb.close();
-		int count = 0;
-		for(int i = 1; i <= C; i++) {
-			count += getShark(i, R, map);
-			moveShark(R,C,map);
-		}
-		System.out.println(count);
+		int result = getSumOfSizeOfFishedShark(R, C, M, sharks);
+		System.out.println(result);
 	}
-	private void moveShark(int row, int col, Shark[][] map) {
-		Shark [][]tmpMap = new Shark[row+1][col+1];
-		for(int i = 1; i <= row; i++)
-			for(int j = 1; j <= col; j++)
-				if(map[i][j] != null) {
-					Shark shark = map[i][j];
-					//move
-					int r = i + dirX[shark.dir] * shark.speed;
-					int c = j + dirY[shark.dir] * shark.speed;
-					
-					r = handleOutOfRangeCase(r,row, shark);
-					c = handleOutOfRangeCase(c, col, shark);
-					
-					if(tmpMap[r][c] == null || (tmpMap[r][c].size < shark.size)) 
-						tmpMap[r][c] = shark;
+
+	private final int[] dirX = {-1, 1, 0, 0};
+	private final int[] dirY = {0, 0, 1, -1};
+	private class Info{
+		int speed, dir, size;
+		public Info(int speed, int dir, int size){
+			this.speed = speed;
+			this.dir = dir;
+			this.size = size;
+		}
+	}
+	public class Point{
+		int x, y;
+		public Point(int x, int y){
+			this.x = x;
+			this.y = y;
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(new Object[]{this.x, this.y});
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			Point p = (Point)obj;
+			return (this.x == p.x && this.y == p.y);
+		}
+	}
+	private int getSumOfSizeOfFishedShark(int r, int c, int m, int[][] sharksInfo) {
+		HashMap<Point, Info> sharks = initSharkInfo(sharksInfo);
+
+		int result = 0;
+		for(int i = 0; i < c; i++){
+			int fishedSize = getShark(sharks, r, i);
+			sharks = move(sharks, r, c);
+			result += fishedSize;
+		}
+		return result;
+	}
+
+	private HashMap<Point, Info> move(HashMap<Point, Info> sharks, int r, int c) {
+		HashMap<Point, Info> moved = new HashMap<>();
+
+		for(Point point : sharks.keySet()){
+			Info curInfo = sharks.get(point);
+			Point movedPoint = getMovedPoint(point, curInfo, r, c);
+			if(moved.containsKey(movedPoint)){
+				if(moved.get(movedPoint).size > curInfo.size){
+					continue;
 				}
-		for(int i = 1; i <= row; i++)
-			for(int j = 1; j <= col; j++)
-				map[i][j] = tmpMap[i][j];
-	}
-	private int handleOutOfRangeCase(int x, int X, Shark shark) {
-		int change = 0;
-		while(x > X || x < 1) {
-			if(x > X)
-				x = X + (X - x);
-			else if(x < 1)
-				x = 1 + (1 -x);
-			change = (change+1)%2;
+			}
+			moved.put(movedPoint, curInfo);
 		}
-		if(change == 1) {
-			if(shark.dir == 0)
-				shark.dir = 1;
-			else if(shark.dir == 1)
-				shark.dir = 0;
-			else if(shark.dir == 2)
-				shark.dir = 3;
-			else if(shark.dir == 3)
-				shark.dir = 2;
-		}
-		return x;
+
+		return moved;
 	}
-	private int getShark(int location, int row, Shark[][] map) {
-		for(int i = 1; i <= row; i++) {
-			Shark shark = map[i][location];
-			if(shark != null) {
-				map[i][location] = null;
-				return shark.size;
+
+	private Point getMovedPoint(Point point, Info info, int r, int c) {
+		int x = point.x + dirX[info.dir] * info.speed;
+		int y = point.y + dirY[info.dir] * info.speed;
+
+		while(isOutOfRange(x, y, r, c)){
+			if(x < 0){
+				x *= -1;
+			}else if(x >= r){
+				x = (r-1) - (x - (r-1));
+			}else if(y < 0){
+				y *= -1;
+			}else if(y >= c){
+				y = (c-1) - (y - (c-1));
+			}else{
+				return null;
+			}
+			info.dir = reverseDir(info.dir);
+		}
+
+		return new Point(x, y);
+	}
+
+	private int reverseDir(int dir) {
+		if(dir % 2 == 0){
+			return dir+1;
+		}else{
+			return dir-1;
+		}
+	}
+
+	private boolean isOutOfRange(int x, int y, int r, int c) {
+		return (x < 0 || y < 0 || x >= r || y >= c);
+	}
+
+	private int getShark(HashMap<Point, Info> sharks, int row, int col) {
+		for(int i = 0; i < row; i++){
+			Point cur = new Point(i, col);
+			if(sharks.containsKey(cur)){
+				Info info = sharks.remove(cur);
+				return info.size;
 			}
 		}
 		return 0;
+	}
+
+	private HashMap<Point, Info> initSharkInfo(int[][] sharksInfo) {
+		HashMap<Point, Info> map = new HashMap<>();
+
+		for(int[] shark : sharksInfo){
+			int x = shark[0] - 1;
+			int y = shark[1] - 1;
+			Point point = new Point(x, y);
+
+			int speed = shark[2];
+			int dir = shark[3] - 1;
+			int size = shark[4];
+			Info info = new Info(speed, dir, size);
+
+			map.put(point, info);
+		}
+
+		return map;
 	}
 }
