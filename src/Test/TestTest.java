@@ -50,52 +50,44 @@ public class TestTest{
         }
     }
     private boolean intPassTest(){
-        OldTest oldTest = new OldTest();
         int a = 1;
         int b = 1;
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean intFailTest(){
-        OldTest oldTest = new OldTest();
         int a = 1;
         int b = 2;
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean stringPassTest(){
-        OldTest oldTest = new OldTest();
         String a = "1";
         String b = "1";
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean stringFailTest(){
-        OldTest oldTest = new OldTest();
         String a = "1";
         String b = "2";
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean intArrPassTest(){
-        OldTest oldTest = new OldTest();
         int[] a = {1, 2, 3};
         int[] b = {1, 2, 3};
-        test.test(a, b);
-        return test.test(a, b).getResult();
+        Test.test(a, b);
+        return Test.test(a, b).getResult();
     }
     private boolean intArrFailTest(){
-        OldTest oldTest = new OldTest();
         int[] a = {1, 2, 3};
         int[] b = {1, 2};
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean int2DArrPassTest(){
-        OldTest oldTest = new OldTest();
         int[][] a = {{1, 2, 3}, {1, 2}};
         int[][] b = {{1, 2, 3}, {1, 2}};
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
     private boolean int2DArrFailTest(){
-        OldTest oldTest = new OldTest();
         int[][] a = {{1, 2}, {1, 2}};
         int[][] b = {{1, 2, 3}, {1, 2}};
-        return test.test(a, b).getResult();
+        return Test.test(a, b).getResult();
     }
 }
