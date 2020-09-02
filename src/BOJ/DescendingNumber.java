@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ public class DescendingNumber{
 //        new DescendingNumber().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N = 180000;
         long result = getNthDescendingNumber(N);

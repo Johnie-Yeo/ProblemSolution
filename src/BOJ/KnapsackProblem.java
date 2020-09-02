@@ -1,10 +1,9 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class KnapsackProblem {
@@ -13,7 +12,7 @@ public class KnapsackProblem {
 //        new Main().solve();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N, C;
         int[] stuff;

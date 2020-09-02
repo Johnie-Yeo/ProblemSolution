@@ -1,6 +1,6 @@
 package BOJ.Samsung.Test;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 public class Cubing {
@@ -10,7 +10,7 @@ public class Cubing {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input, expect;
 
@@ -43,7 +43,7 @@ public class Cubing {
 		testCase(test, input, expect);
 	}
 
-	private void testCase(Test test, String input, String expect) {
+	private void testCase(OldTest test, String input, String expect) {
 		String[] parsed = input.split("\n");
 		int N = Integer.parseInt(parsed[0]);
 		String[] moves = parsed[1].split(" ");

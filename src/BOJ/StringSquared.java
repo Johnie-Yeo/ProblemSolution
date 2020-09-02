@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ public class StringSquared{
         new StringSquared().test();
     }
     public void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
+        OlderTest<Integer> test = new OlderTest<Integer>();
         String word;
         int result, expect;
 

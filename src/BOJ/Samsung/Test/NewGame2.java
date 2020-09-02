@@ -86,7 +86,7 @@ public class NewGame2{
     }
 
     private void testCase(String input, int expect){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String[] parsed = input.split("\n", 2);
 

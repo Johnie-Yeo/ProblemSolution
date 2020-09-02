@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -34,7 +34,7 @@ public class BodyBuild{
         new BodyBuild().test();
     }
     private void test(){
-        OldTest<String> test = new OldTest<String>();
+        OlderTest<String> test = new OlderTest<String>();
 
         int N;
         int[][] data;

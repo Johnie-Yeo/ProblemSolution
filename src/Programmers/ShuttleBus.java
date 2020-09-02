@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ public class ShuttleBus {
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int n, t, m;
         String[] timeTable;

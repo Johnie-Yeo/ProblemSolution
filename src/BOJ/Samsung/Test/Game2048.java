@@ -1,5 +1,5 @@
 package BOJ.Samsung.Test;
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,7 +20,7 @@ public class Game2048 {
 		new Game2048().test();
 	}
 	private void test(){
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N;
 		int[][] map;

@@ -12,7 +12,7 @@ public class DragonCurve {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input;
 		int expect;
@@ -60,7 +60,7 @@ public class DragonCurve {
 		testCase(test, input, expect);
 	}
 
-	private void testCase(Test test, String input, int expect) {
+	private void testCase(OldTest test, String input, int expect) {
 		String[] parsed = input.split("\n", 2);
 		int N = Integer.parseInt(parsed[0]);
 		int[][] curveInfo = InputParser.parseStringTo2DIntArray(parsed[1]);

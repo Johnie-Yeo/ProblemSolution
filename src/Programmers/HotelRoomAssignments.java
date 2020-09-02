@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ public class HotelRoomAssignments{
         new HotelRoomAssignments().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         long k = 10;
         long[] room_number = {1, 3, 4, 1, 3, 1};

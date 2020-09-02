@@ -1,17 +1,15 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Cache{
     public static void main(String[] args) {
         new Cache().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int cacheSize;
         String[]  cities;

@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ public class Chart {
         new Chart().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N;
         int[] data;

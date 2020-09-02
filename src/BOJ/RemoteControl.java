@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class RemoteControl{
         new RemoteControl().test();
     }
     public void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
+        OlderTest<Integer> test = new OlderTest<Integer>();
         int N, M;
         boolean[] buttons;
         int[] brokes;

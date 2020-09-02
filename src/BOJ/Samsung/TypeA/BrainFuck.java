@@ -1,7 +1,7 @@
 package BOJ.Samsung.TypeA;
 
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ public class BrainFuck {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int sizeOfMemory, sizeOfCode, sizeOfInput;
 		String code, input;

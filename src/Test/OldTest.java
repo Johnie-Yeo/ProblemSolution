@@ -1,51 +1,94 @@
 package Test;
 
-import java.util.*;
+import java.util.Arrays;
 
-public class OldTest<T> {
-    public Result test(T result, T expect){
+public class OldTest {
+    public <T> Result test(T result, T expect){
         Message<T> testMessage = new Message<T>();
         boolean pass = equals(result, expect);
         String message = testMessage.getMessage(pass, result, expect);
         return setResult(pass, message);
     }
-    public Result test(T[] result, T[] expect){
-        return listTest(toList(result), toList(expect));
-    }
-
-    private Result listTest(List<T> result, List<T> expect){
+    public <T> Result test(T[] result, T[] expect){
+        Message<T> testMessage = new Message<T>();
         boolean pass = equals(result, expect);
-        String message = null;//this.message.getMessage(pass, result, expect);
+        String message = testMessage.getMessage(pass, result, expect);
         return setResult(pass, message);
     }
+    private <T> Result test(T[][] result, T[][] expect){
+        Message<T> testMessage = new Message<T>();
+        boolean pass = equals(result, expect);
+        String message = testMessage.getMessage(pass, result, expect);
+        return setResult(pass, message);
+    }
+    public Result test(int[] result, int[] expect){
+        Integer[] boxedResult = box(result);
+        Integer[] boxedExpect = box(expect);
+        return this.test(boxedResult, boxedExpect);
+    }
+    public Result test(long[] result, long[] expect){
+        Long[] boxedResult = box(result);
+        Long[] boxedExpect = box(expect);
+        return this.test(boxedResult, boxedExpect);
+    }
+    public Result test(int[][] result, int[][] expect){
+        Integer[][] boxedResult = box(result);
+        Integer[][] boxedExpect = box(expect);
+        return this.test(boxedResult, boxedExpect);
+    }
 
-    private boolean equals(T a, T b){
+
+
+    private <T> boolean equals(T a, T b){
         return a.equals(b);
     }
-    private boolean equals(List<T> a, List<T> b){
-        int size = a.size();
-        if(size != b.size()){
+    private <T> boolean equals(T[] a, T[] b){
+        int size = a.length;
+        if(size != b.length){
             return false;
         }
         for(int index = 0; index < size; index++){
-            if(a.get(index) != b.get(index)) {
+            if(!equals(a[index], b[index])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private <T> boolean equals(T[][] a, T[][] b){
+        int size = a.length;
+        if(size != b.length){
+            return false;
+        }
+        for(int index = 0; index < size; index++){
+            if(!equals(a[index], b[index])) {
                 return false;
             }
         }
         return true;
     }
 
-    private List<T> toList(T[] result) {
-        List<T> list = new ArrayList<>();
-        for(T element : result){
-            list.add(element);
-        }
-        return list;
-    }
     private Result setResult(boolean pass, String message) {
         if(message == null){
             throw new NullPointerException();
         }
         return new Result(pass, message);
+    }
+
+    private Integer[] box(int[] arr){
+        return Arrays.stream(arr).boxed().toArray(Integer[]::new);
+    }
+    private Long[] box(long[] arr){
+        return Arrays.stream(arr).boxed().toArray(Long[]::new);
+    }
+    private Integer[][] box(int[][] array){
+        Integer[][] list =
+                Arrays.stream(array)
+                        .map(arr ->
+                                Arrays.stream(arr)
+                                        .boxed()
+                                        .toArray(Integer[]::new)
+                        )
+                        .toArray(Integer[][]::new);
+        return list;
     }
 }

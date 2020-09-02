@@ -1,6 +1,6 @@
 package BOJ.Samsung.Test;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class EscapeMarble2 {
 		new EscapeMarble2().test();
 	}
 	private void test(){
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N, M;
 		String input;

@@ -1,7 +1,7 @@
 package BOJ.Samsung.Test;
 
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -28,7 +28,7 @@ public class Snake {
 		}
 	}
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int result, expect;
 		String input;

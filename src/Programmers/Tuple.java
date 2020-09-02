@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ public class Tuple{
         new Tuple().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String s;
         int[] result, expect;

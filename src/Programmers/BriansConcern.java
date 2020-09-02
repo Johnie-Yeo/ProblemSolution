@@ -1,7 +1,7 @@
 package Programmers;
 
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ public class BriansConcern{
         new BriansConcern().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String sentence = "HaEaLaLaObWORLDb";
         String expect = "HELLO WORLD";

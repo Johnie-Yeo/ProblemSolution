@@ -1,7 +1,6 @@
 package BOJ;
 
-import SWEA.SangwonContinuosSum;
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ public class NormalBackPack {
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N, K;
         int[][] stuffs;

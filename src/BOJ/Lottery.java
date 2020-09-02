@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class Lottery{
         new Lottery().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int k;
         int[] S;

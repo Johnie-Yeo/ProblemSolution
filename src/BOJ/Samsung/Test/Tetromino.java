@@ -12,7 +12,7 @@ public class Tetromino {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N, M;
 		int[][] map;

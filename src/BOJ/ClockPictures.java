@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ public class ClockPictures {
         new ClockPictures().test();
     }
     private void test(){
-        OldTest<String> test = new OldTest<String>();
+        OlderTest<String> test = new OlderTest<String>();
 
         int n;
         int[] clock1, clock2;

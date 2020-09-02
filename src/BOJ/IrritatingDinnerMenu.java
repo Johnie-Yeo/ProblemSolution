@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class IrritatingDinnerMenu{
         new IrritatingDinnerMenu().solve();
     }
     public void test(){
-        OldTest<String> test = new OldTest<String>();
+        OlderTest<String> test = new OlderTest<String>();
 
         int N;
         String target;

@@ -13,7 +13,7 @@ public class TileWithConfetti {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input;
 		int[][] map;

@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +65,7 @@ public class BadUsers{
         new BadUsers().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String[] userId, bannedId;
         int result, expect;

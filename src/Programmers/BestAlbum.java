@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class BestAlbum {
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         String[] genres;
         int[] plays, result, expect;

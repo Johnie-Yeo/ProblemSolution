@@ -11,7 +11,7 @@ public class RobotCleaner {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input;
 		int expect;
@@ -41,7 +41,7 @@ public class RobotCleaner {
 		testCase(test, input, expect);
 	}
 
-	private void testCase(Test test, String input, int expect) {
+	private void testCase(OldTest test, String input, int expect) {
 		final String NEW_LINE = "\n";
 		final String SPACE = " ";
 		String[] parsed = input.split(NEW_LINE);

@@ -11,7 +11,7 @@ public class GerryMandering {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N;
 		int[] population;

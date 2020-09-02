@@ -12,7 +12,7 @@ public class RotateArray4 {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N, M, K;
 		String input;

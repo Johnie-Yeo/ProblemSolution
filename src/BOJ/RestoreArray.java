@@ -10,7 +10,7 @@ public class RestoreArray {
 //        new RestoreArray().solve();
     }
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
         String input, result, expect;
 
         input = "2 4 1 1\n" +

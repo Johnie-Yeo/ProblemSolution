@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class NumberOf0InCombination{
         new NumberOf0InCombination().test();
     }
     public void test(){
-        OldTest<Integer> test = new OldTest<Integer>();
+        OlderTest<Integer> test = new OlderTest<Integer>();
         int n, m, result, expect;
 
         n = 40;

@@ -1,6 +1,6 @@
 package BOJ.Samsung.Test;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -11,7 +11,7 @@ public class TestAdmin {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 		
 		int N;
 		int[] A;

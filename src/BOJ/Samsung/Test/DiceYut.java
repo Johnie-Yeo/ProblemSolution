@@ -47,7 +47,7 @@ public class DiceYut{
     }
 
     private void testCase(String input, int expect) {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[] arr = InputParser.parseStringToIntArray(input);
         int result = getMaxScore(arr);

@@ -1,7 +1,7 @@
 package BOJ;
 
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -15,7 +15,7 @@ public class AddBracket{
         new AddBracket().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N;
         String formula;

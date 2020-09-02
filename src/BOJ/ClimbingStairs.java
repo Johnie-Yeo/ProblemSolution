@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class ClimbingStairs{
 //        new Main().solve();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
         
         int n;
         int[] stairs;

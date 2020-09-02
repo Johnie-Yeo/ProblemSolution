@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class LetterWrittenByIndustrySpy {
         new LetterWrittenByIndustrySpy().solve();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int c;
         String paper;

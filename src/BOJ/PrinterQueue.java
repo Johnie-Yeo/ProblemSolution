@@ -1,8 +1,7 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
-import javax.print.Doc;
 import java.util.*;
 
 public class PrinterQueue {
@@ -11,7 +10,7 @@ public class PrinterQueue {
 //        new PrinterQueue().test();
     }
     private void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int T, N, M;
         String input;

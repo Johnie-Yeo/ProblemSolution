@@ -12,7 +12,7 @@ public class RollingDice {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		int N, M, x, y, numberOfOrders;
 		String input;

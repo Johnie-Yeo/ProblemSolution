@@ -1,8 +1,7 @@
 package SWEA;
 
-import Test.Test;
+import Test.OldTest;
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 public class CandleEvent {
@@ -11,7 +10,7 @@ public class CandleEvent {
         new CandleEvent().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         long numberOfCandles;
         long result, expect;

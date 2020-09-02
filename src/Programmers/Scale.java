@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class Scale {
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[] weight;
         int result, expect;

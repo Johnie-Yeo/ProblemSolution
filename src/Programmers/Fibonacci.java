@@ -1,6 +1,6 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
 public class Fibonacci {
     public static void main(String[] args) {
@@ -8,7 +8,7 @@ public class Fibonacci {
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int input, result, expect;
 

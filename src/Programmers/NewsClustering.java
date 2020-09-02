@@ -1,17 +1,15 @@
 package Programmers;
 
-import Test.Test;
+import Test.OldTest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class NewsClustering {
 	public static void main(String[] args) {
 		new NewsClustering().test();
 	}
 	public void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String str1, str2;
 		int expect, result;

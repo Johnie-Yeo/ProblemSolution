@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class FourIntegerToMakeSum0{
         new FourIntegerToMakeSum0().test();
     }
     public void test(){
-        OldTest<Long> test = new OldTest<Long>();
+        OlderTest<Long> test = new OlderTest<Long>();
 
         int n;
         int[][] data;

@@ -105,7 +105,7 @@ public class ByeFineDust {
 	}
 
 	private void testCase(String input, int expect) {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String[] parsed = input.split("\n", 2);
 		int R = Integer.parseInt(parsed[0].split(" ")[0]);

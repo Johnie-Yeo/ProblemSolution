@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.Test;
+import Test.OldTest;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ public class MovingPipe1{
     }
 
     private void test() {
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int N;
         int[][] map;

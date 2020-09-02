@@ -1,16 +1,13 @@
 package Programmers;
 
-import Test.Test;
-
-import java.util.Collections;
-import java.util.PriorityQueue;
+import Test.OldTest;
 
 public class CrossSteppingStone{
     public static void main(String[] args) {
         new CrossSteppingStone().test();
     }
     public void test(){
-        Test test = new Test();
+        OldTest test = new OldTest();
 
         int[] stones;
         int k, result, expect;

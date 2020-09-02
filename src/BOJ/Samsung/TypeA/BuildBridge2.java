@@ -12,7 +12,7 @@ public class BuildBridge2 {
 	}
 
 	private void test() {
-		Test test = new Test();
+		OldTest test = new OldTest();
 
 		String input;
 		int expect;
@@ -205,7 +205,7 @@ public class BuildBridge2 {
 		testCase(test, input, expect);
 	}
 
-	private void testCase(Test test, String input, int expect){
+	private void testCase(OldTest test, String input, int expect){
 		final String DELIM = "\n";
 		final String SPACE = " ";
 		String[] parsed = input.split(DELIM);

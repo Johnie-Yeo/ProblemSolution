@@ -1,6 +1,6 @@
 package BOJ;
 
-import Test.OldTest;
+import Test.OlderTest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class CaesarCipher{
         new CaesarCipher().test();
     }
     public void test(){
-        OldTest<String> test = new OldTest<String>();
+        OlderTest<String> test = new OlderTest<String>();
 
         String A, W, S;
         String result, expect;
