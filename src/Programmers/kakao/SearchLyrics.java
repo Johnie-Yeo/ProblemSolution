@@ -10,14 +10,12 @@ public class SearchLyrics {
     }
 
     private void test() {
-        Test test = new Test();
-
         String[] words = {"frodo", "front", "frost", "frozen", "frame", "kakao"};
         String[] queries = {"fro??", "????o", "fr???", "fro???", "pro?", "?????"};
         int[] expect = {3, 2, 4, 1, 0, 5};
         int[] result = solution(words, queries);
 
-        test.test(result, expect).printResult();
+        Test.test(result, expect).printResult();
     }
 
     final char WILDCARD = '?';
