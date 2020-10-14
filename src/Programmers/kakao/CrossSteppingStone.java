@@ -1,4 +1,4 @@
-package Programmers;
+package Programmers.kakao;
 
 import Test.OldTest;
 
@@ -46,59 +46,48 @@ public class CrossSteppingStone{
         test.test(result, expect).printResult();
     }
     public int solution(int[] stones, int k) {
-        int size = stones.length;
-        int min = getMin(stones);
-        int max = getMax(stones);
-        int result = -1;
+        int min = 1;
+        int max = 200000000;
+        int length = stones.length;
 
-        while(min <= max){
-            int middle = (min+max)/2;
-            if(isCrossable(stones, middle, k)){
-                result = middle;
-                min = middle+1;
-            }else{
-                max = middle-1;
+        int result = 0;
+        while(min <= max) {
+            int mid = (min + max) / 2;
+
+            int[] tmp = cross(stones, mid, length);
+
+            if(isFeasible(tmp, k)) {
+                result = mid;
+                min = mid + 1;
+            } else {
+                max = mid - 1;
             }
         }
+
         return result;
     }
 
-    private boolean isCrossable(int[] stones, int friend, int limit) {
-        int start = -1;
-        for(int stone : stones){
-            stone = stone - friend + 1;
-            if(stone <= 0){
-                if(start < 0){
-                    start = 1;
-                }else{
-                    start++;
-                }
-            }else{
-                if(start >= limit){
+    private boolean isFeasible(int[] stones, int k) {
+        int count = 0;
+        for(int stone : stones) {
+            if(stone >= 0) {
+                count = 0;
+            } else {
+                count++;
+                if(count >= k) {
                     return false;
-                }else{
-                    start = -1;
                 }
             }
         }
-        if(start >= limit){
-            return false;
-        }
+
         return true;
     }
 
-    private int getMin(int[] arr){
-        int min = Integer.MAX_VALUE;
-        for(int elem : arr){
-            min = Math.min(min, elem);
+    private int[] cross(int[] stones, int friends, int length) {
+        int[] result = new int[length];
+        for(int i = 0; i < length; i++) {
+            result[i] = stones[i] - friends;
         }
-        return min;
-    }
-    private int getMax(int[] arr) {
-        int max = 0;
-        for(int elem : arr){
-            max = Math.max(max, elem);
-        }
-        return max;
+        return result;
     }
 }
