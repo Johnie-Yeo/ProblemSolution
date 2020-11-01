@@ -1,6 +1,8 @@
 package Test;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Test {
     public static <T> Result test(T result, T expect){
@@ -16,6 +18,12 @@ public class Test {
         return setResult(pass, message);
     }
     private static <T> Result test(T[][] result, T[][] expect){
+        Message<T> testMessage = new Message<T>();
+        boolean pass = equals(result, expect);
+        String message = testMessage.getMessage(pass, result, expect);
+        return setResult(pass, message);
+    }
+    public static <T> Result test(List<T> result, List<T> expect) {
         Message<T> testMessage = new Message<T>();
         boolean pass = equals(result, expect);
         String message = testMessage.getMessage(pass, result, expect);
@@ -66,6 +74,17 @@ public class Test {
         }
         return true;
     }
+    private static <T> boolean equals(List<T> a, List<T> b) {
+        if(a.size() != b.size()) {
+            return false;
+        }
+        for(int index = 0; index < a.size(); index++) {
+            if(!equals(a.get(index), b.get(index))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private static Result setResult(boolean pass, String message) {
         if(message == null){
@@ -81,14 +100,11 @@ public class Test {
         return Arrays.stream(arr).boxed().toArray(Long[]::new);
     }
     private static Integer[][] box(int[][] array){
-        Integer[][] list =
-                Arrays.stream(array)
-                        .map(arr ->
-                                Arrays.stream(arr)
-                                        .boxed()
-                                        .toArray(Integer[]::new)
-                        )
-                        .toArray(Integer[][]::new);
+        Stream<int[]> stream = Arrays.stream(array);
+        Integer[][] list = stream
+                .map(arr -> box(arr))
+                .toArray(Integer[][]::new);
+
         return list;
     }
 }

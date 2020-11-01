@@ -1,6 +1,9 @@
 package Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestTest{
     private class TestResult{
@@ -20,12 +23,14 @@ public class TestTest{
             add(new TestResult(stringPassTest(), "String Pass test"));
             add(new TestResult(intArrPassTest(), "Int array Pass test"));
             add(new TestResult(int2DArrPassTest(), "Int 2D array Pass test"));
+            add(new TestResult(listPassTest(), "List pass test"));
         }};
         ArrayList<TestResult> failList = new ArrayList<>(){{
             add(new TestResult(intFailTest(), "Int Fail test"));
             add(new TestResult(stringFailTest(), "String Fail test"));
             add(new TestResult(intArrFailTest(), "Int array Fail test"));
             add(new TestResult(int2DArrFailTest(), "Int 2D array Fail test"));
+            add(new TestResult(listFailTest(), "List pass test"));
         }};
 
         for(TestResult passTest : passList){
@@ -89,5 +94,18 @@ public class TestTest{
         int[][] a = {{1, 2}, {1, 2}};
         int[][] b = {{1, 2, 3}, {1, 2}};
         return Test.test(a, b).getResult();
+    }
+    private boolean listPassTest() {
+        List<Integer> a = toList(new int[]{1, 2, 3});
+        List<Integer> b = toList(new int[]{1, 2, 3});
+        return Test.test(a, b).getResult();
+    }
+    private boolean listFailTest() {
+        List<Integer> a = toList(new int[]{1, 2, 3});
+        List<Integer> b = toList(new int[]{1, 2, 4});
+        return Test.test(a, b).getResult();
+    }
+    private List<Integer> toList(int[] arr) {
+        return Arrays.stream(arr).boxed().collect(Collectors.toList());
     }
 }
