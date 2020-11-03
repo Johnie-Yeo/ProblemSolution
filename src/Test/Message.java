@@ -54,6 +54,9 @@ public class Message<T>{
         return reason + failMessage;
     }
     private String toString(T elem){
+        if(elem == null) {
+            return "null";
+        }
         return elem.toString();
     }
     private String toString(T[] list){

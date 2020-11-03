@@ -48,6 +48,9 @@ public class Test {
 
 
     private static <T> boolean equals(T a, T b){
+        if(a == null) {
+            return a == b;
+        }
         return a.equals(b);
     }
     private static <T> boolean equals(T[] a, T[] b){
