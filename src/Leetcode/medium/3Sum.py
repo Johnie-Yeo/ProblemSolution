@@ -4,44 +4,26 @@ from typing import List, Tuple
 
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        negatives = sorted(list(filter(lambda num: num < 0, nums)))
-        positives = sorted(list(filter(lambda num: num > 0, nums)))
-        zeros = list(filter(lambda num: num == 0, nums))
+        nums.sort()
+        result = set()
+        for index in range(len(nums)):
+            if nums[index] > 0:
+                break
 
-        result = []
-        # 2 n, 1 p, 0 z
-        negativeMap = self.getSumMap(negatives)
-        positiveSet = set(positives)
-        for cur in positiveSet:
-            for tup in negativeMap.get(-cur, []):
-                result.append([*tup, cur])
-        # 1 n, 2 p, 0 z
-        positiveMap = self.getSumMap(positives)
-        negativeSet = set(negatives)
-        for cur in negativeSet:
-            for tup in positiveMap.get(-cur, []):
-                result.append([cur, *tup])
-        # 1 n, 1 p, 1 z
-        if len(zeros) > 0:
-            for cur in positiveSet:
-                if -cur in negativeSet:
-                    result.append([-cur, 0, cur])
-        # 0 n, 0 p, 3 z
-        if len(zeros) >= 3:
-            result.append([0, 0, 0])
+            i = index+1
+            j = len(nums)-1
+            while i < j:
+                threeSum = nums[index] + nums[i] + nums[j]
+                if threeSum == 0:
+                    result.add((nums[index], nums[i], nums[j]))
+                    i += 1
+                    j -= 1
+                elif threeSum < 0:
+                    i += 1
+                elif threeSum > 0:
+                    j -= 1
 
-        return result
-
-    def getSumMap(self, arr):
-        result = {}
-        for i in range(len(arr)):
-            for j in range(i+1, len(arr)):
-                key = arr[i] + arr[j]
-                value = result.get(key, set())
-                value.add((arr[i], arr[j]))
-                result[key] = value
-
-        return result
+        return list(map(lambda tup: list(tup), result))
 
 
 class TestSolution(unittest.TestCase):
@@ -63,5 +45,17 @@ class TestSolution(unittest.TestCase):
     def test_case3(self):
         nums = [0]
         expect = []
+        result = self.solution.threeSum(nums)
+        self.assertEqual(expect, result)
+
+    def test_case4(self):
+        nums = [0, 0, 0, 0]
+        expect = [[0, 0, 0]]
+        result = self.solution.threeSum(nums)
+        self.assertEqual(expect, result)
+
+    def test_case5(self):
+        nums = [3,0,-2,-1,1,2]
+        expect = [[-2,-1,3],[-2,0,2],[-1,0,1]]
         result = self.solution.threeSum(nums)
         self.assertEqual(expect, result)
