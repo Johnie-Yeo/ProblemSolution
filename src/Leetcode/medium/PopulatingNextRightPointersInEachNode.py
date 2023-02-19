@@ -11,19 +11,18 @@ class Node(object):
 
 class Solution(object):
     def connect(self, root):
-        q = [root] if root.val else []
-        result = []
+        queue = [root]
 
-        while q:
-            nextQ = []
-            for elem in q:
-                result.append(elem)
-                if elem.left:
-                    nextQ.append(elem.left)
-                    nextQ.append(elem.right)
-            q = nextQ
+        while queue:
+            for i in range(len(queue) - 1):
+                queue[i].next = queue[i+1]
 
-        return result
+            for _ in range(len(queue)):
+                current = queue.pop(0)
+                if current and current.left:
+                    queue.append(current.left)
+                    queue.append(current.right)
+        return root
 
 
 class TestSolution(unittest.TestCase):
@@ -45,14 +44,14 @@ class TestSolution(unittest.TestCase):
     def parseToNode(self, root):
         nodeList = list(map(Node, root))
 
-        for i in range(len(root)):
-            node = nodeList[i]
-            leftIndex = (i+1)*2-1
-            rightIndex = (i+1)*2
-            if leftIndex >= len(root):
-                break
-            node.left = nodeList[leftIndex]
-            node.right = nodeList[rightIndex]
+        # for i in range(len(root)):
+        #     node = nodeList[i]
+        #     leftIndex = (i+1)*2-1
+        #     rightIndex = (i+1)*2
+        #     if leftIndex >= len(root):
+        #         break
+        #     node.left = nodeList[leftIndex]
+        #     node.right = nodeList[rightIndex]
 
         return nodeList[0] if nodeList else Node(None)
 
