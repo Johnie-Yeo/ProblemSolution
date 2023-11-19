@@ -3,10 +3,15 @@ import unittest
 
 class Solution(object):
     def winnerOfGame(self, colors):
-        """
-        :type colors: str
-        :rtype: bool
-        """
+
+        alice = list(filter(lambda color: len(color) > 2, colors.split("B")))
+        bob = list(filter(lambda color: len(color) > 2, colors.split("A")))
+
+        alice = sum(list(map(lambda color: len(color) - 2, alice)))
+        bob = sum(list(map(lambda color: len(color) - 2, bob)))
+
+        return True if alice > bob else False
+
 
 
 class TestSolution(unittest.TestCase):
