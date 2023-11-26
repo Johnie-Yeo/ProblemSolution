@@ -13,7 +13,6 @@ class Solution(object):
         return True if alice > bob else False
 
 
-
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
