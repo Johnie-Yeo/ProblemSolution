@@ -21,4 +21,4 @@ class Solution:
         DFS(root)
 
         # Return the final maximum path sum
-        return ans[0]          
+        return ans[0]
