@@ -1,5 +1,3 @@
-# failed!
-
 import unittest
 from typing import List
 
@@ -19,23 +17,29 @@ class Solution:
                     stops[route] = []
                 stops[route].append(i)
 
-        targetBus = stops[source]
+        targetBuses = stops[source] if source in stops else []
         currentStop = set()
-        for busIdx in targetBus:
+        visitedBus = set()
+        visitedBus.update(targetBuses)
+        for busIdx in targetBuses:
+            visitedBus.add(busIdx)
             currentStop.update(list(filter(lambda e: e != source, buses[busIdx])))
 
         cnt = 1
         while target not in currentStop:
             nextStop = set()
             for stop in currentStop:
-                targetBus = stops[stop]
-                for busIdx in targetBus:
-                    nextStop.update(list(filter(lambda e: e != source, buses[busIdx])))
-            prev = currentStop
-            currentStop = nextStop
-            if prev == currentStop:
+                targetBuses = stops[stop]
+                for busIdx in targetBuses:
+                    if busIdx not in visitedBus:
+                        visitedBus.add(busIdx)
+                        nextStop.update(list(filter(lambda e: e != source, buses[busIdx])))
+
+            if not nextStop:
                 return -1
-            cnt += 1
+            else:
+                currentStop = nextStop
+                cnt += 1
         return cnt
 
 
@@ -55,6 +59,14 @@ class TestSolution(unittest.TestCase):
         routes = [[7,12],[4,5,15],[6],[15,19],[9,12,13]]
         source = 15
         target = 12
+        expect = -1
+        result = self.solution.numBusesToDestination(routes, source, target)
+        self.assertEqual(expect, result)
+
+    def test_case3(self):
+        routes = [[1,2,7],[3,6,7]]
+        source = 8
+        target = 6
         expect = -1
         result = self.solution.numBusesToDestination(routes, source, target)
         self.assertEqual(expect, result)
